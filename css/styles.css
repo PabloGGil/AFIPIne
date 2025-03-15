@@ -1,0 +1,402 @@
+* {
+  margin: 0;
+  border: none;
+  padding: none;
+  box-sizing: border-box;
+}
+
+.itim-regular {
+  font-family: "Itim", cursive;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.cabecera{
+  background-color: blue;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: x-large;
+  font-weight: bolder;
+  color:white;
+  text-align: center;
+}
+
+
+.bodyHome {
+  background-color:darkgray
+}
+
+main h1 {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: xx-large;
+  font-weight: bolder;
+  color: #efe8e8;
+  text-align: center;
+  padding: 1em;
+  display:block;
+}
+
+.seccionOferta {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: x-large;
+  font-weight: bolder;
+  background-color: #150232;
+  text-align: center;
+}
+.containerOferta{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  scroll-margin-top: 0.7em;
+  position: relative; 
+  /* z-index: 900; */
+ 
+}
+
+.cardOferta{
+  width: 300px;
+  height: 500px;
+  margin: 20px;
+  position: relative;
+  border-radius: 5%;
+  background: radial-gradient(
+    circle at center,
+    Lavender,
+    Lavender,
+    rgb(140, 240, 215),
+    rgb(166, 122, 255)
+  ); 
+  padding: 0.8em;
+  box-shadow: 0 8px 8px 0 rgba(14, 6, 241, 0.2);
+  transition: 0.3s;
+}
+.containerOferta img {
+  width: 70%;
+  margin: auto;
+  border-radius: 5%;
+}
+
+.cardOferta input {
+  color: white;
+  background-color: blue ;
+  width: 9em;
+  padding : 0em 2em; 
+  text-align: center;
+  border-radius: 10px;
+  
+}
+
+.btnAddOferta{
+  justify-content:flex-end;
+  background-color: burlywood;
+}
+/* Estilos patra productos */
+.seccionProductos{
+  /* font-family: Verdana, Geneva, Tahoma, sans-serif; */
+  /* font-size: x-large; */
+  /* font-weight: bolder; */
+  background-color: #3c08f7; 
+  text-align: center;
+  padding:10px;
+ 
+ 
+ 
+}
+
+
+
+ /* estilo de tarjetas para la ferreteria
+.cardFerreteria{
+  width: 500px;
+  height: 300px;
+  margin: 20px;
+   position: relative; 
+  border-radius: 5%;
+  background-color: #d1d398;
+  padding: 1em;
+  box-shadow: 0 8px 8px 0 black;
+  transition: 0.3s;
+} */
+
+
+
+
+footer {
+  position: relative;
+  bottom: 0;
+}
+
+footer ul {
+  display: flex;
+  margin-left: auto;
+  align-items: center;
+}
+
+footer ul li {
+  justify-content: space-around;
+  padding-left: 0.6em;
+  padding-right: 0.6em;
+}
+
+/*  estilos de las cartas */
+.div_carta {
+  width: 300px;
+  height: 500px;
+  /* background-image: url('fondo4.jpg'); */
+  margin: 10px;
+  border: 5px solid #101010;
+  background-color: rgb(14, 190, 67);
+  border-radius: 25px;
+  padding: 10px;
+  /* overflow:auto; */
+}
+
+.titulo_producto {
+  margin: 1vh 2vw;
+  display:flexbox;
+  text-align: center;
+}
+
+
+
+.div_imagen_Producto {
+  /* margin: 0 14px; */
+  text-align: center;
+  margin: 1vh 2vw;
+}
+
+.imagen_Producto {
+  border-radius: 10px;
+  width: 50%;
+  height: 80%;
+  border: 3px solid #bcc6ccd1;
+  box-shadow: 5px 5px 5px; 
+  margin-bottom: 5px;
+ 
+}
+
+
+
+.div_caracteristica {
+  /* margin: 18px 22px; */
+  margin: 1vh 2vw
+}
+
+.titulo_caract {
+  font-weight: 700;
+  font-size: 1em;
+  display: inline-block;
+
+}
+body {
+  margin-bottom: 60px; /* Ajusta el valor según la altura del footer */
+}
+/* --------------------------------------------------prod ------------------------------------ */
+.card {
+  width: 300px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  padding: 20px;
+  margin: 10px;
+}
+
+.card-title {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.card-image {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+.card-description {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.card-button {
+  background-color: #007BFF;
+  color: #fff;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.card-button:hover {
+  background-color: #0056b3;
+}
+.card-description-title {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  color: #555;
+  font-weight: bold
+}
+.card-price {
+  font-size: 1.2rem;
+  color: #007BFF;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+/* --------------------------------------------------------------------------- */
+
+.div_precio{
+  margin: 1vh 2vw
+}
+
+.div_boton{
+  justify-content: flex-end;
+  text-align: center;
+  margin: 1vh 2vw;
+}
+.boton_Cartas{
+  background-color: blue;
+  color:aliceblue;
+  /* display :inline-block; */
+  font-weight: 600;
+  text-align: center;
+  width: 100%;
+  display : block;
+  border-radius: 5px;
+}
+/*  TODAS LAS PAGINAS MENOS LA PPAL.  */
+
+.bodyRegistro,
+.bodyIniSesion,
+.bodyContacto,
+.bodyEquipo {
+  /* background-image: linear-gradient(to right, red, blue); */
+  background-image: url('../imagenes/fondo.jpg');
+  background-size: cover;
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.3
+  ); /* Color de fondo blanco con opacidad */
+  background-blend-mode: overlay; /* Mezcla el color y la imagen de fondo */
+}
+
+
+
+/*  PAGINA DE INICIO SESIÓN  */
+
+.iniSesion,
+.registro {
+  background-color: #d1d398;
+  width: 50%;
+  margin: 5em auto;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  opacity: 0.85;
+}
+
+.iniSesion h2,
+.registro h2,
+.divEquipo h2 {
+  font-weight: bolder;
+  color: #053506;
+  padding: 0.5em;
+}
+
+
+.inputX {
+  display: block;
+  width: 85%;
+  border: 2px solid #111010;
+  border-radius: 10px;
+  margin: 3%;
+  height: 3.5rem;
+ 
+}
+
+.boton {
+  background-color: #0f0596;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: large;
+  font-weight: bolder;
+  color: #d2d3c7;
+  border-radius: 10px;
+  padding: 0em 2em;
+  margin-bottom: 10px;
+}
+/* 
+.leerTyC {
+  font-size: small;
+  color: #992020;
+}
+
+.txtAyuda {
+  margin: 0.5em;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: large;
+  font-weight: bolder;
+  text-decoration: none;
+  color: #960505;
+}
+
+.divEquipo h4 {
+  font-weight: bolder;
+  color: #960505;
+  padding: 0.5em;
+}
+
+.divEquipo {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+} */
+
+.containerX {
+  display: flex;
+  flex-direction: column; /* Coloca los elementos en una columna */
+  align-items: center;    /* Centra los elementos horizontalmente */
+  padding: 20px;
+  border: 1px solid #ddd; /* Bordes del contenedor */
+  border-radius: 8px;     /* Bordes redondeados */
+  width: 300px;           /* Ancho del contenedor */
+  background-color: #f9f9f9; /* Fondo del contenedor */
+}
+
+/* Estilos para la imagen */
+.image {
+  max-width: 100%;        /* La imagen no será más grande que el contenedor */
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+/* Estilos para el texto */
+.text {
+  font-size: 16px;
+  color: #333;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+/* Estilos para el botón */
+ .containerX button {
+  padding: 10px 20px;
+  font-size: 16px;
+  color: #fff;
+  background-color: #14385e;
+  border:#150232;
+  border-style: double;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.button:hover {
+  background-color: #0056b3; /* Cambio de color al pasar el mouse */
+}

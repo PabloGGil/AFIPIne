@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">   
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="./css/miCss.css"> -->
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.15.3/xlsx.full.min.js"></script>
+    <!-- <link rel="stylesheet" href="css/estiloCartas.css"> -->
+    <title>AFIP - FE</title>
+</head>
+<body>
+    <header class="cabecera">
+     
+        <!-- <img src="./imagenes/mago.jpg" alt="Logo" size  width="100"> -->
+        <span >FACTURACION ELECTRONICA - AFIP</span>
+ 
+    </header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">
+            <!-- <img src="imagenes/mago.jpg" alt="" width="60" height="48"> -->
+          </a>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="index.html">Inicio</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Consultas
+                </a>
+                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <li><a class="dropdown-item" href="#">Tipos de Comprobante</a></li>
+                    <li><a class="dropdown-item" href="#">Tipos de concepto</a></li>
+                    <li><a class="dropdown-item" href="#">Condicion IVA Receptor</a></li>
+                    <li><a class="dropdown-item" href="#">Tipos de documento</a></li>
+                    <li><a class="dropdown-item" href="#">Tipos de documento</a></li>
+                 </ul>
+              </li>
+            </ul>
+            
+            <div class="mb-3 ms-auto">
+              <input type="file" id="fileInput" class="form-control " accept=".xlsx, .xls">
+            </div>
+          </div>
+
+        </div>
+    </nav>
+
+    <main  class="bodyHome">
+  
+    <!-- Modal  -->
+      <div class="modal fade" id="productoModal" tabindex="-1" aria-labelledby="productoModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="productoModalLabel">Detalles del Producto</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <!-- Aquí se mostrarán los datos -->
+              <p id="modal-content"></p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="table-responsive">
+
+      <table class="table  table-striped table-bordered text-center" id="dataTable">
+        <thead class="table-dark" >
+            <tr id="tableHeader"></tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+  </div>
+    </main>   
+    <footer>
+      
+      <nav class="navbar fixed-bottom  navbar-dark bg-dark">
+        <div class="container-fluid">
+          
+          <div class="col-md-6 d-flex align-items-center">
+            <a href="/" class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1">
+              <svg class="bi" width="30" height="24">
+                <use xlink:href="#bootstrap" />
+              </svg>
+            </a>
+            <span class="mb-3 mb-md-0 text-muted">&copy; 2025 @2707 </span>
+          </div>
+    
+          <ul class="col-md-6 justify-content-end list-unstyled d-flex">
+            <li class="ms-3"><a class="bi bi-map" href="ubicacion.html"><svg class="bi" width="20"  height="24"></svg></a></li
+            <li class="ms-3"><a class="bi bi-youtube" href=""><svg class="bi" width="20" height="24"></svg></a></li>
+            <li class="ms-3"><a class="bi bi-instagram" href=""><svg class="bi" width="24" height="24">
+                  <!-- <use xlink:href="#instagram" /> -->
+                </svg></a></li>
+            <li class="ms-3"><a class="bi bi-facebook" href=""><svg class="bi" width="24" height="24"></svg></a></li>
+            
+          </ul>
+    
+      </nav>
+
+   
+    </footer>
+    <!-- <script src="js/api.js"> </script>  -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>
