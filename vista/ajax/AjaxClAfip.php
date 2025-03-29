@@ -66,6 +66,10 @@ if (isset($_GET['q'])) {
             $ajInst=new UltimoAutorizado(2,11);
             $res=$ajInst->getData();
             break;
+        // case 'solicitar':
+        //     $ajInst=new FECAESolicitar($data);
+        //     $res=$ajInst->getData();
+        //     break;
     }
     // $cant=count($ret['info']);
     // $retorno['rc'] = $ret['rc'];
@@ -76,30 +80,32 @@ if (isset($_GET['q'])) {
     ////////////////////////////////////////////////////////////////////////
     ////////////////////////Inicio de recepcion json////////////////////////
     ////////////////////////////////////////////////////////////////////////
-    $rc = '1';
-    $msg = 'error';
+    
     $ret = array();
    
 
-    if (! isset($_SESSION['user']))
-        $user='NN';
-    else
-        $user=$_SESSION['user'];
+    // if (! isset($_SESSION['user']))
+    //     $user='NN';
+    // else
+    //     $user=$_SESSION['user'];
     // decodifico la entrada en UTF8
     $params = json_decode(file_get_contents('php://input'), true, 512, JSON_UNESCAPED_UNICODE);
     //print_r($params['info']);
-    // switch ($params['q']) {
+    switch ($params['q']) {
        
-    //     case 'addBackup':
-    //         $objBSN = new BackupBSN();
-    //         $ret = $objBSN->Agregar_BSN($params['info']);
-    //         if ($ret['rc']=='0') {
-    //             $bitacora->addRegistro('Backup', $user, 'Agregar', '', json_encode($params['info']));
-    //             // $rc = 0;
-    //             // $msg = 'OK';
-    //         }
-    //         break;
-    // }
+        case 'solicitar':
+            // $objBSN = new BackupBSN();
+            // $ret = $objBSN->Agregar_BSN($params['info']);
+            // if ($ret['rc']=='0') {
+            //     $bitacora->addRegistro('Backup', $user, 'Agregar', '', json_encode($params['info']));
+            //     // $rc = 0;
+            //     // $msg = 'OK';
+            // }
+            // break;
+            $ajInst=new FECAESolicitar($params['info']);
+            $res=$ajInst->sendData();
+            break;
+    }
     $retorno=$ret;
 }
 header('Content-Type: application/json');

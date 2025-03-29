@@ -24,27 +24,28 @@ define ("LOG_TKT_FIRM", "archivos/TAF.tmp"); // ticket de acceso firmado
 define ("CUIT", 20149576798);
 define ("TKT_AUTH","archivos/tktaut.xml");
 
-if(tktExpirado()){
-    $wsaa=new WSAA();
-    $wsaa->CreaLoginTkt('wsfe');
-    $cms=$wsaa->FirmaLoginTkt();
-    $auth=$wsaa->CallWSAA($cms);
-    var_dump($auth);
-}
+// if(tktExpirado()){
+//     $wsaa=new WSAA();
+//     $wsaa->CreaLoginTkt('wsfe');
+//     $cms=$wsaa->FirmaLoginTkt();
+//     $auth=$wsaa->CallWSAA($cms);
+//     var_dump($auth);
+// }
 /*------------------------------------------------------------
 --- FECCAESolicitar 
 --------------------------------------------------------------*/
-$auth=new Auth();
-$dataAuth=$auth->getAuthData();
-var_dump($dataAuth);
+// $auth=new Auth();
+// $dataAuth=$auth->getAuthData();
+// var_dump($dataAuth);
 // $tipoConcepto=new TiposConcepto();
 // $tipoComprobante=new ParamGetTiposCbte();
 // var_dump($tipoComprobante->getData());
 // $fecae=new FECAEARegInformativo();
 // $fecae->getData();
  $fecae=new UltimoAutorizado(2,11);
- $fecae->getData();
-// $aux=new CondicionIvaReceptor();
+ $x=$fecae->getData();
+var_dump($x->CbteNro);
+ // $aux=new CondicionIvaReceptor();
 // var_dump($aux->getData());
 // $fecae=new CompConsultar(11,2,2);
 // $fecae->getData();
@@ -62,36 +63,36 @@ var_dump($dataAuth);
 // $fecae->getData();
 
 /* Devuelve la fecha de expiracion del ticket */
-function get_expiration()
-{
-    $ta = fopen(TKT_AUTH, 'r');
+// function get_expiration()
+// {
+//     $ta = fopen(TKT_AUTH, 'r');
        
-    $xmlstr = stream_get_contents($ta);
-    fclose($ta);
-    $tadata = new SimpleXMLElement($xmlstr);
-    $r =$tadata->header->expirationTime;
-    return $r;
-}
-// Indica si el tichet esta expirado
-function tktExpirado(){
-    date_default_timezone_set('UTC');
-    $fechaExpiracion=get_expiration();
-    $fechaActual=date('c');
-    var_dump($fechaActual);
-    if ($fechaActual < $fechaExpiracion) {
-        echo "La fecha aún no ha expirado.";
-        return false;
-    } else {
-        echo "La fecha ha expirado.";
-        return true;
-    }
+//     $xmlstr = stream_get_contents($ta);
+//     fclose($ta);
+//     $tadata = new SimpleXMLElement($xmlstr);
+//     $r =$tadata->header->expirationTime;
+//     return $r;
+// }
+// // Indica si el tichet esta expirado
+// function tktExpirado(){
+//     date_default_timezone_set('UTC');
+//     $fechaExpiracion=get_expiration();
+//     $fechaActual=date('c');
+//     var_dump($fechaActual);
+//     if ($fechaActual < $fechaExpiracion) {
+//         echo "La fecha aún no ha expirado.";
+//         return false;
+//     } else {
+//         echo "La fecha ha expirado.";
+//         return true;
+//     }
     
     // $r = DateTime($nose['header']['expirationTime']);
    
-}
+// }
 
- function xml2array($xml)
-    {
-        $json = json_encode(simplexml_load_string($xml));
-        return json_decode($json, true);
-    }
+//  function xml2array($xml)
+//     {
+//         $json = json_encode(simplexml_load_string($xml));
+//         return json_decode($json, true);
+//     }

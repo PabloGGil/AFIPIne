@@ -22,31 +22,110 @@ class  FECAESolicitar{
     private $ImpOpEx=0;
     private $ImpTrib=0;
     private $ImpIVA=0;
+    private $FchServDesde="";
+    private $FchServHasta="";
+    private $FchVtoPago="";
     private $MonId='PES';
     private $MonCotiz=1;
-   // private $Tipo=0;
    
-    private $Nro=4160;
-    private $Cuit=30711529280;
+    private $cbteAsocTipo=0;
+    private $cbteAsocPtoVta=0;
+    private $cbteAsocNro=4160;
+    private $cbteAsocCuit=30711529280;
+    private $cbteAsocCbteFch="";
 
-    private $idt=0;
-    private $Desct=0;
-    private $baseimpt=0;
-    private $alict=0;
-    private $importet=0;
-    private $idi=15;
-    private $baseimpi=0;
-    private $importei=0;
-    private $CondicionIVAReceptorId=15;
+    private $tribId=0;
+    private $tribDesct=0;
+    private $tribBaseImp=0;
+    private $tribAlic=0;
+    private $tribImporte=0;
+
+    private $ivaId=15;
+    private $ivaBaseImp=0;
+    private $ivaImporte=0;
+
+    private $opcId;
+    private $opcValor;
+
+    private $compradorDocTipo;
+    private $compradorDocNro;
+    private $compradorPorcentaje;
+
+    private $pasocFchDesde;
+    private $pasocFchHasta;
+    
+    private $actId;
+    // private $CondicionIVAReceptorId=15;
     private $dataAuth;
-    function __construct()
+
+
+    function __construct($reg)
     {
         $x=new Auth();
         $this->dataAuth=$x->getAuthData();
+        $this->CantReg=1;
+        $this->CargaRegistro($reg);
+        // $tok=$reg['Auth']['token'];
+        
+        // $this->CondicionIVAReceptorId=15;
     }
-    function getData(){
-        // $dataAuth=new Auth();
-        // var_dump($dataAuth);
+   
+    function CargaRegistro($reg){
+        $this->PtoVta=$reg['FeCAEReq']['FeCabReq']['PtoVta'];
+        $this->CbteTipo=$reg['FeCAEReq']['FeCabReq']['CbteTipo'];
+        
+        $this->Concepto=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Concepto'];
+        $this->DocTipo=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['DocTipo'];
+        $this->DocNro=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['DocNro'];
+        $this->CbteDesde=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['CbteDesde'];
+        $this->CbteHasta=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['CbteHasta'];
+        $this->CbteFch=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['CbteFch'];
+        $this->ImpTotal=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['ImpTotal'];
+        $this->ImpTotConc=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['ImpTotConc'];
+        $this->ImpNeto=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['ImpNeto'];
+        $this->ImpOpEx=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['ImpOpEx'];
+        $this->ImpTrib=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['ImpTrib'];
+        $this->ImpIVA=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['ImpIVA'];
+        $this->FchServDesde=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['ImpIVA'];
+        $this->FchServHasta=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['ImpIVA'];
+        $this->FchVtoPago=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['ImpIVA'];
+        $this->MonId=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['MonId'];
+        $this->MonCotiz=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['MonCotiz'];
+        
+        $this->cbteAsocTipo=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['CbtesAsoc']['Tipo'];
+        $this->cbteAsocPtoVta=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['CbtesAsoc']['PtoVta'];
+        $this->cbteAsocNro=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['CbtesAsoc']['Nro'];
+        $this->cbteAsocCuit=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['CbtesAsoc']['Cuit'];
+        $this->cbteAsocCbteFch=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['CbtesAsoc']['CbteFch'];
+       
+
+        $this->tribId=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Tributos']['Id'];
+        $this->tribDesct=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Tributos']['Desc'];
+        $this->tribBaseImp=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Tributos']['BaseImp'];
+        $this->tribAlic=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Tributos']['Alic'];
+        $this->tribImporte=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Tributos']['Importe'];
+
+        $this->ivaId=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Iva']['Id'];
+        $this->ivaBaseImp=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Iva']['BaseImp'];
+        $this->ivaImporte=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Iva']['Importe'];
+        
+        $this->opcId=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Opcionales']['Id'];
+        $this->opcValor=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Opcionales']['Valor'];
+
+        $this->compradorDocTipo=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Compradores']['DocTipo'];
+        $this->compradorDocNro=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Compradores']['DocNro'];
+        $this->compradorPorcentaje=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Compradores']['Porcentaje'];
+
+        $this->pasocFchDesde=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['PeriodoAsoc']['FchDesde'];
+        $this->pasocFchHasta=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['PeriodoAsoc']['FchDesde'];
+
+        $this->actId=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Actividades']['Id'];
+    
+    }
+    function sendData(){
+        // Obtener el ultimo nro de comprobante
+        $ultimo=new UltimoAutorizado($this->cbtePtoVta,$this->cbteTipo);
+        $prox=($ultimo->getData())+1 ;
         $data=[
             // 'FECAESolicitar'=>[           
                 'Auth' =>$this->dataAuth,
@@ -59,12 +138,12 @@ class  FECAESolicitar{
                     ],
                     'FeDetReq'=>[
                         'FECAEDetRequest'=>[
-                            'CondicionIVAReceptorId'=>$this->CondicionIVAReceptorId,
+                            // 'CondicionIVAReceptorId'=>$this->CondicionIVAReceptorId,
                             'Concepto'=>$this->Concepto,
                             'DocTipo'=>$this->DocTipo,
                             'DocNro'=>$this->DocNro,
-                            'CbteDesde'=>$this->CbteDesde,
-                            'CbteHasta'=>$this->CbteHasta,
+                            'CbteDesde'=>$prox,
+                            'CbteHasta'=>$prox,
                             'CbteFch'=>$this->CbteFch,
                             'ImpTotal'=>$this->ImpTotal,
                             'ImpTotConc'=>$this->ImpTotConc,
@@ -76,30 +155,52 @@ class  FECAESolicitar{
                             'MonCotiz'=>$this->MonCotiz,
                             'CbtesAsoc'=>[
                                 'CbteAsoc'=>[
-                                'Tipo'=>$this->CbteTipo,
-                                'PtoVta'=>$this->PtoVta,
-                                'Nro'=>$this->Nro,
-                                'Cuit'=>$this->Cuit,
-                                'CbteFch'=>$this->CbteFch,
+                                'Tipo'=>$this->cbteTipo,
+                                'PtoVta'=>$this->cbtePtoVta,
+                                'Nro'=>$this->cbteNro,
+                                'Cuit'=>$this->cbteCuit,
+                                'CbteFch'=>$this->cbteCbteFch,
                                 ],
                             ],
-                            // 'Tributos'=>[
-                            //     'Tributo'=>[
-                            //         'Id'=>$this->idt,
-                            //         'Desc'=>$this->Desct,
-                            //         'BaseImp'=>$this->baseimpt,
-                            //         'Alic'=>$this->alict,
-                            //         'Importe'=>$this->importet,
-                            //     ],
-                            // ],
-                            // 'Iva'=>[
-                            //     'AlicIvac'=>[
-                            //         'Id'=>$this->idi,
-                            //         'BaseImp'=>$this->baseimpi,
-                            //         'Importe'=>$this->importei,
-                            //     ],
-                            // ],
-
+                            'Tributos'=>[
+                                'Tributo'=>[
+                                    'Id'=>$this->tribId,
+                                    'Desc'=>$this->tribDesct,
+                                    'BaseImp'=>$this->tribBaseImp,
+                                    'Alic'=>$this->tribAlic,
+                                    'Importe'=>$this->tribImporte,
+                                ],
+                            ],
+                            'Iva'=>[
+                                'AlicIvac'=>[
+                                    'Id'=>$this->ivaId,
+                                    'BaseImp'=>$this->ivaBaseImp,
+                                    'Importe'=>$this->ivaImporte,
+                                ],
+                            ],
+                            'Opcionales'=>[
+                                'Opcional'=>[
+                                        'Id'=> $this->opcId,
+                                        'Valor'=>$this->opcValor,
+                                ],
+                            ],
+                            'Compradores'=>[
+                                'Comprador'=>[
+                                    'DocTipo'=>$this->compradorDocTipo,
+                                    'DocNro'=>$this->compradorDocNro,
+                                    'Porcentaje'=>$this->compradorPorcentaje,
+                                ],
+                            ],              
+                            'PeriodoAsoc'=>[
+                                'FchDesde'=>$this->pasocFchDesde,
+                                'FchHasta'=>$this->pasocFchHasta,
+                            ],
+                            'Actividades'=>[
+                                'Actividad'=>[
+                                    'Id'=>$this->actId,
+                                ],
+                            ],
+                            
                         ],
                     ]
                 ],
@@ -116,9 +217,12 @@ class  FECAESolicitar{
                 
             ]),
         ];
+
+        $this->CbteDesde=
          var_dump($data);
         try{
-            $client=new SoapClient("https://wswhomo.afip.gov.ar/wsfev1/service.asmx?wsdl", $options);
+            $servicio= 'FECAESolicitar';
+            $client=new SoapClient("https://wswhomo.afip.gov.ar/wsfev1/service.asmx?op=".$servicio, $options);
             $results=$client->FECAESolicitar($data); 
             file_put_contents("LastRequest.xml",$client-> __getLastRequest(),FILE_APPEND); 
             file_put_contents("LastResponse.xml",$client-> __getLastResponse(),FILE_APPEND); 
@@ -131,6 +235,5 @@ class  FECAESolicitar{
             echo "Error: " . $e->getMessage();
         }
     }
-
 
 }

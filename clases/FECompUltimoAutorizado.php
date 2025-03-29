@@ -15,9 +15,8 @@ class UltimoAutorizado{
         $this->cbtetipo=$ctipo;
     }
     function getData(){
-        $dataAuth=new Auth();
+        // $dataAuth=new Auth();
         $data=[
-            
             'Auth' =>$this->dataAuth,
             'PtoVta'=>$this->ptovta,
             'CbteTipo'=>$this->cbtetipo,
@@ -41,8 +40,10 @@ class UltimoAutorizado{
                 exit("SOAP Fault: ".$results->faultcode."\n".$results->faultstring."\n");
             }
             
-            var_dump($results->FECompUltimoAutorizadoResult);
-            return $results->FECompUltimoAutorizadoResult;
+            // var_dump($results->FECompUltimoAutorizadoResult);
+            // echo $results->FECompUltimoAutorizadoResult['CbteNro'];
+            return $results->FECompUltimoAutorizadoResult->CbteNro;
+            
         }catch(SoapFault $e){
             echo "Error: " . $e->getMessage();
             echo htmlspecialchars(print_r($e, true));

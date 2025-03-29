@@ -1,3 +1,82 @@
+ var parametrosFe= {
+	Auth: {
+		Token: "",
+		Sign: "",
+		Cuit: ""
+	},
+	FeCAEReq: {
+		FeCabReq: {
+			CantReg: 1,
+			PtoVta: 2,
+			CbteTipo: 11
+		},
+		FeDetReq: {
+			FECAEDetRequest: {
+				Concepto: 0 ,
+				DocTipo: 0,
+				DocNro: 0,
+				CbteDesde: 0,
+				CbteHasta: 0,
+				CbteFch: "",
+				ImpTotal: 200,
+				ImpTotConc:0 ,
+				ImpNeto: 0,
+				ImpOpEx: 0,
+				ImpTrib: 0,
+				ImpIVA: 0,
+				FchServDesde: "",
+				FchServHasta: "",
+				FchVtoPago: "",
+				MonId: "PES",
+				MonCotiz: 1,
+				CbtesAsoc: 
+				[{
+					Tipo: 11,
+					PtoVta: 2,
+					Nro: 4160,
+					Cuit: "",
+					CbteFch: ""
+				}],
+				Tributos:
+				[ {
+						Id: "",
+						Desc: "",
+						BaseImp: "",
+						Alic: "",
+						Importe: ""
+				}],
+				Iva: [{
+						Id: "",
+						BaseImp: "",
+						Importe: ""
+				}],
+				Opcionales: 
+				[{
+						Id: "",
+						Valor: ""
+				}],
+				Compradores: 
+				[{
+
+						DocTipo: "",
+						DocNro: "",
+						Porcentaje: ""
+				}],
+				PeriodoAsoc: 
+				{
+					FchDesde: "",
+					FchHasta: ""
+				},
+				Actividades: [{	Id: ""}],
+			},
+		},
+	},
+ };
+ 
+
+
+console.log(parametrosFe.Auth.Token);
+
 document.getElementById('fileInput').addEventListener('change', function(event) {
     let file = event.target.files[0];
     let reader = new FileReader();
@@ -34,7 +113,9 @@ document.getElementById('fileInput').addEventListener('change', function(event) 
                 btn.classList.add('btn', 'btn-primary', 'btn-sm');
                 btn.onclick = function() {
                     // enviarDatos(row);
-                    consultarDatos('tipoDocumento');
+                    mandanga={q:'solicitar',info:parametrosFe}
+                    enviarDatos(mandanga);
+                    // consultarDatos('tipoDocumento');
                 };
                 tdAction.appendChild(btn);
                 tr.appendChild(tdAction);
@@ -53,24 +134,48 @@ document.getElementById('fileInput').addEventListener('change', function(event) 
     reader.readAsArrayBuffer(file);
 });
 
-function XenviarDatos(datos) {
-    $.ajax({
-        url: 'AjaxClAfip.php?q=tipoDocumento',
-        type: 'POST',
-        data: { datos: JSON.stringify(datos) },
-        success: function(response) {
-            alert('Datos enviados con éxito: '  );
-            var_dump(response);
-        },
-        error: function() {
-            alert('Error al enviar los datos');
-        }
-    });
+function enviarDatos(datos) {
+    // $.ajax({
+    //     url: 'AjaxClAfip.php',
+    //     type: 'POST',
+    //     data: { datos: JSON.stringify(datos) },
+    //     success: function(response) {
+    //         alert('Datos enviados con éxito: '  );
+    //         var_dump(response);
+    //     },
+    //     error: function() {
+    //         alert('Error al enviar los datos');
+    //     }
+    // });
+    //  convertir datos a la estuctura a mandar
+
+    const jsonString = JSON.stringify(datos);
+  const xhr = new XMLHttpRequest();
+
+  
+  xhr.open("POST", "vista/ajax/AjaxClAfip.php");
+  xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+  xhr.send(jsonString);
+  xhr.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      
+      var respuesta =JSON.parse( this.responseText);
+      if (respuesta.rc!="0"){
+      
+        window.alert(respuesta.msgerror);
+      }
+      else {
+        windows.alert("recibi rta")
+        // listar();
+      }
+    }
+  
+  }
 }
 function consultarDatos(tipo){
     // const jsonString = JSON.stringify("");
     const xhr = new XMLHttpRequest();
-    xhr.open("get", "vista/ajax/AjaxClAfip.php?q=tipo");
+    xhr.open("get", "vista/ajax/AjaxClAfip.php?q=" + tipo);
     xhr.send();
   
    
