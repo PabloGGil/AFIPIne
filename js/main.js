@@ -36,6 +36,13 @@
 					Nro: 4160,
 					Cuit: "",
 					CbteFch: ""
+				},
+        {
+					Tipo: 11,
+					PtoVta: 3,
+					Nro: 99,
+					Cuit: "",
+					CbteFch: ""
 				}],
 				Tributos:
 				[ {

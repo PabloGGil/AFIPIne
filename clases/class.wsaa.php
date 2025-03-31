@@ -34,7 +34,7 @@ class WSAA{
             $cms=$this->FirmaLoginTkt();
             $auth=$this->CallWSAA($cms);
         }
-        elseif($this->tktExpirado() || !file_exists(Config::TKT_AUTH)){
+        elseif($this->tktExpirado() || !file_exists(RPATH.Config::TKT_AUTH)){
             // $wsaa=new WSAA();
             $this->CreaLoginTkt('wsfe');
             $cms=$this->FirmaLoginTkt();

@@ -124,7 +124,7 @@ class  FECAESolicitar{
     }
     function sendData(){
         // Obtener el ultimo nro de comprobante
-        $ultimo=new UltimoAutorizado($this->cbtePtoVta,$this->cbteTipo);
+        $ultimo=new UltimoAutorizado($this->PtoVta,$this->CbteTipo);
         $prox=($ultimo->getData())+1 ;
         $data=[
             // 'FECAESolicitar'=>[           
@@ -155,11 +155,11 @@ class  FECAESolicitar{
                             'MonCotiz'=>$this->MonCotiz,
                             'CbtesAsoc'=>[
                                 'CbteAsoc'=>[
-                                'Tipo'=>$this->cbteTipo,
-                                'PtoVta'=>$this->cbtePtoVta,
-                                'Nro'=>$this->cbteNro,
-                                'Cuit'=>$this->cbteCuit,
-                                'CbteFch'=>$this->cbteCbteFch,
+                                'Tipo'=>$this->cbteAsocTipo,
+                                'PtoVta'=>$this->cbteAsocPtoVta,
+                                'Nro'=>$this->cbteAsocNro,
+                                'Cuit'=>$this->cbteAsocCuit,
+                                'CbteFch'=>$this->cbteAsocCbteFch,
                                 ],
                             ],
                             'Tributos'=>[

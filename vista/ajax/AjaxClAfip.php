@@ -8,6 +8,7 @@ include_once $path_cli . 'config/class.Config.php';
 include_once $path_cli . 'clases/class.Auth.php';
 include_once $path_cli . 'clases/class.wsaa.php';
 include_once $path_cli . 'clases/class.FECAESolicitar.php';
+include_once $path_cli . 'clases/Zclass.FECAESolicitar.php';
 include_once $path_cli . 'clases/class.FECompConsultar.php';
 include_once $path_cli . 'clases/class.FEParamGetTiposCbte.php';
 include_once $path_cli . 'clases/class.FECAEARegInformativo.php';
@@ -102,7 +103,7 @@ if (isset($_GET['q'])) {
             //     // $msg = 'OK';
             // }
             // break;
-            $ajInst=new FECAESolicitar($params['info']);
+            $ajInst=new ZFECAESolicitar($params['info']);
             $res=$ajInst->sendData();
             break;
     }
