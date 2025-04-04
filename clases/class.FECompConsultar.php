@@ -1,6 +1,6 @@
 <?php
 $path_cli = __DIR__ . '/../';
-echo $path_cli;
+// echo $path_cli;
 include_once $path_cli . 'clases/class.Auth.php';
 /* --------------------------------
 <FeCompConsReq>
@@ -43,7 +43,7 @@ class CompConsultar{
                 ],
             ]),
         ];
-          var_dump($data);
+        //   var_dump($data);
         try{
             $client=new SoapClient("https://wswhomo.afip.gov.ar/wsfev1/service.asmx?wsdl", $options);
             $results=$client->FECompConsultar($data); 
@@ -52,7 +52,7 @@ class CompConsultar{
             if (is_soap_fault($results)){
                 exit("SOAP Fault: ".$results->faultcode."\n".$results->faultstring."\n");
             }
-            var_dump($results->FECompConsultarResult);
+            // var_dump($results->FECompConsultarResult);
         }catch(SoapFault $e){
             echo "Error: " . $e->getMessage();
         }

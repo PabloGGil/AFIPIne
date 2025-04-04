@@ -1,6 +1,6 @@
 <?php
 $path_cli = __DIR__ . '/../';
-echo $path_cli;
+// echo $path_cli;
 include_once $path_cli . "clases/class.Auth.php";
 class TiposConcepto{
    private $dataAuth;
@@ -24,7 +24,7 @@ class TiposConcepto{
                 ],
             ]),
         ];
-        var_dump($data);
+        // var_dump($data);
         try{
             $client=new SoapClient("https://wswhomo.afip.gov.ar/wsfev1/service.asmx?wsdl", $options);
             
@@ -35,7 +35,7 @@ class TiposConcepto{
                 exit("SOAP Fault: ".$results->faultcode."\n".$results->faultstring."\n");
             }
             
-            var_dump($results->FEParamGetTiposConceptoResult);
+            // var_dump($results->FEParamGetTiposConceptoResult);
             return $results->FEParamGetTiposConceptoResult;
         }catch(SoapFault $e){
             echo "Error: " . $e->getMessage();

@@ -1,6 +1,6 @@
 <?php
 $path_cli = __DIR__ . '/../';
-echo $path_cli;
+// echo $path_cli;
 include_once $path_cli .'clases/class.Auth.php';
 include_once $path_cli . 'clases/FECompUltimoAutorizado.php';
 class  ZFECAESolicitar{  
@@ -136,7 +136,7 @@ class  ZFECAESolicitar{
         $ultimo=new UltimoAutorizado($this->PtoVta,$this->CbteTipo);
         $prox=($ultimo->getData())+1 ;
         $data=[
-             'FECAESolicitar'=>[           
+            //  'FECAESolicitar'=>[           
                 'Auth' =>$this->dataAuth,
  
                 'FeCAEReq'=>[          
@@ -161,67 +161,26 @@ class  ZFECAESolicitar{
                             'ImpIVA'=>$this->ImpIVA,
                             'MonId'=>$this->MonId,
                             'MonCotiz'=>$this->MonCotiz,
-                            // 'CbtesAsoc'=>[
-                            //     'CbteAsoc'=>[
-                            //     'Tipo'=>$this->cbteAsocTipo,
-                            //     'PtoVta'=>$this->cbteAsocPtoVta,
-                            //     'Nro'=>$this->cbteAsocNro,
-                            //     'Cuit'=>$this->cbteAsocCuit,
-                            //     'CbteFch'=>$this->cbteAsocCbteFch,
-                            //     ],
-                            // ],
+          
                             'CbtesAsoc'=>$this->cbtesAsociados,
-                            // 'Tributos'=>[
-                            //     'Tributo'=>[
-                            //         'Id'=>$this->tribId,
-                            //         'Desc'=>$this->tribDesct,
-                            //         'BaseImp'=>$this->tribBaseImp,
-                            //         'Alic'=>$this->tribAlic,
-                            //         'Importe'=>$this->tribImporte,
-                            //     ],
-                            // ],
-                            'Tributos'=>$this->tributos,
+ 
+                             'Tributos'=>$this->tributos,
 
-                            // 'Iva'=>[
-                            //     'AlicIvac'=>[
-                            //         'Id'=>$this->ivaId,
-                            //         'BaseImp'=>$this->ivaBaseImp,
-                            //         'Importe'=>$this->ivaImporte,
-                            //     ],
-                            // ],
-                            'Iva'=>$this->iva,
-                            // 'Opcionales'=>[
-                            //     'Opcional'=>[
-                            //             'Id'=> $this->opcId,
-                            //             'Valor'=>$this->opcValor,
-                            //     ],
-                            // ],
-                            'Opcionales'=>$this->opcionales,
-                            // 'Compradores'=>[
-                            //     'Comprador'=>[
-                            //         'DocTipo'=>$this->compradorDocTipo,
-                            //         'DocNro'=>$this->compradorDocNro,
-                            //         'Porcentaje'=>$this->compradorPorcentaje,
-                            //     ],
-                            // ],   
-                            'Compradores'=>$this->compradores,           
-                            // 'PeriodoAsoc'=>[
-                            //     'FchDesde'=>$this->pasocFchDesde,
-                            //     'FchHasta'=>$this->pasocFchHasta,
-                            // ],
-                            'PeriodoAsoc'=>$this->periodoAsociados,
-                            // 'Actividades'=>[
-                            //     'Actividad'=>[
-                            //         'Id'=>$this->actId,
-                            //     ],
-                            // ],
-                            'Actividades'=>$this->actividades,
+                             'Iva'=>$this->iva,
+ 
+                             'Opcionales'=>$this->opcionales,
+ 
+                             'Compradores'=>$this->compradores,           
+ 
+                             'PeriodoAsoc'=>$this->periodoAsociados,
+ 
+                             'Actividades'=>$this->actividades,
                         ],
-                    ]
+                    ],
                 ],
-             ],
+            //  ],
         ];
-
+        // var_dump($data);
         $options = [
             'trace'=> 1,
             'stream_context' => stream_context_create([
@@ -237,14 +196,15 @@ class  ZFECAESolicitar{
         //  var_dump($data);
         try{
             $servicio= 'FECAESolicitar';
-            $client=new SoapClient("https://wswhomo.afip.gov.ar/wsfev1/service.asmx?op=".$servicio, $options);
+            // $client=new SoapClient("https://wswhomo.afip.gov.ar/wsfev1/service.asmx?op=".$servicio, $options);
+            $client=new SoapClient("https://wswhomo.afip.gov.ar/wsfev1/service.asmx?wsdl", $options);
             $results=$client->FECAESolicitar($data); 
             file_put_contents("LastRequest.xml",$client-> __getLastRequest(),FILE_APPEND); 
             file_put_contents("LastResponse.xml",$client-> __getLastResponse(),FILE_APPEND); 
             if (is_soap_fault($results)){
                 exit("Error en cliente SOAP: ".$results->faultcode."\n".$results->faultstring."\n");
             }
-            var_dump($results->FECAESolicitarResult);
+            // var_dump($results->FECAESolicitarResult);
             return $results->FECAESolicitarResult;
         }catch(SoapFault $e){
             echo "Error: " . $e->getMessage();

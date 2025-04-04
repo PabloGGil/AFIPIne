@@ -1,6 +1,6 @@
 <?php
 $path_cli = __DIR__ . '/../';
-echo $path_cli;
+// echo $path_cli;
 include_once $path_cli .'clases/class.Auth.php';
 
 class  FECAESolicitar{  
@@ -218,8 +218,8 @@ class  FECAESolicitar{
             ]),
         ];
 
-        $this->CbteDesde=
-         var_dump($data);
+        // $this->CbteDesde=
+        //  var_dump($data);
         try{
             $servicio= 'FECAESolicitar';
             $client=new SoapClient("https://wswhomo.afip.gov.ar/wsfev1/service.asmx?op=".$servicio, $options);
@@ -229,7 +229,7 @@ class  FECAESolicitar{
             if (is_soap_fault($results)){
                 exit("Error en cliente SOAP: ".$results->faultcode."\n".$results->faultstring."\n");
             }
-            var_dump($results->FECAESolicitarResult);
+            // var_dump($results->FECAESolicitarResult);
             return $results->FECAESolicitarResult;
         }catch(SoapFault $e){
             echo "Error: " . $e->getMessage();

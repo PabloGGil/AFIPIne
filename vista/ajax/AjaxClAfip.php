@@ -107,7 +107,7 @@ if (isset($_GET['q'])) {
             $res=$ajInst->sendData();
             break;
     }
-    $retorno=$ret;
+    $retorno=$res;
 }
 header('Content-Type: application/json');
 http_response_code(200);

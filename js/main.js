@@ -12,38 +12,38 @@
 		},
 		FeDetReq: {
 			FECAEDetRequest: {
-				Concepto: 0 ,
-				DocTipo: 0,
-				DocNro: 0,
+				Concepto: 3 ,
+				DocTipo: 80,
+				DocNro: 30711529280,
 				CbteDesde: 0,
 				CbteHasta: 0,
-				CbteFch: "",
+				CbteFch: "20250404",
 				ImpTotal: 200,
 				ImpTotConc:0 ,
-				ImpNeto: 0,
+				ImpNeto: 200,
 				ImpOpEx: 0,
 				ImpTrib: 0,
 				ImpIVA: 0,
-				FchServDesde: "",
-				FchServHasta: "",
+				FchServDesde: "20250301",
+				FchServHasta: "20250401",
 				FchVtoPago: "",
 				MonId: "PES",
 				MonCotiz: 1,
-				CbtesAsoc: 
-				[{
-					Tipo: 11,
-					PtoVta: 2,
-					Nro: 4160,
-					Cuit: "",
-					CbteFch: ""
-				},
-        {
-					Tipo: 11,
-					PtoVta: 3,
-					Nro: 99,
-					Cuit: "",
-					CbteFch: ""
-				}],
+				// CbtesAsoc: 
+				// [{
+				// 	Tipo: 11,
+				// 	PtoVta: 2,
+				// 	Nro: 4160,
+				// 	Cuit: "",
+				// 	CbteFch: "20250330"
+				// },
+        // {
+				// 	Tipo: 11,
+				// 	PtoVta: 3,
+				// 	Nro: 99,
+				// 	Cuit: "",
+				// 	CbteFch: "20250330"
+				// }],
 				Tributos:
 				[ {
 						Id: "",
@@ -167,9 +167,9 @@ function enviarDatos(datos) {
     if (this.readyState == 4 && this.status == 200) {
       
       var respuesta =JSON.parse( this.responseText);
-      if (respuesta.rc!="0"){
+      if (respuesta.Errors.length!=0){
       
-        window.alert(respuesta.msgerror);
+        window.alert(respuesta.Errors.Err.Msg);
       }
       else {
         windows.alert("recibi rta")
@@ -189,7 +189,7 @@ function consultarDatos(tipo){
     xhr.onreadystatechange = function () {
       if (this.readyState == 4 && this.status == 200) {
         let data = JSON.parse(this.responseText);
-        var_dump(data);
+        // var_dump(data);
       }
     
     }

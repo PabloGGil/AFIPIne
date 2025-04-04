@@ -1,6 +1,6 @@
 <?php
 $path_cli = __DIR__ . '/../';
-echo $path_cli;
+// echo $path_cli;
 include_once $path_cli . "clases/class.Auth.php";
 class CondicionIvaReceptor{
    private $dataAuth;
@@ -27,7 +27,7 @@ class CondicionIvaReceptor{
                 ],
             ]),
         ];
-        var_dump($data);
+        // var_dump($data);
         try{
             $client=new SoapClient("https://wswhomo.afip.gov.ar/wsfev1/service.asmx?wsdl", $options);
            
@@ -38,7 +38,7 @@ class CondicionIvaReceptor{
                 exit("SOAP Fault: ".$results->faultcode."\n".$results->faultstring."\n");
             }
             
-            var_dump($results->FEParamGetCondicionIvaReceptorResult);
+            // var_dump($results->FEParamGetCondicionIvaReceptorResult);
             return $results->FEParamGetCondicionIvaReceptorResult;
         }catch(SoapFault $e){
             echo "Error: " . $e->getMessage();

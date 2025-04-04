@@ -1,6 +1,6 @@
 <?php
 $path_cli = __DIR__ . '/../';
-echo $path_cli;
+// echo $path_cli;
 include_once $path_cli .'clases/class.Auth.php';
 
 class  FECAEARegInformativo{  
@@ -89,7 +89,7 @@ class  FECAEARegInformativo{
                 ],
             ]),
         ];
-         var_dump($data);
+        //  var_dump($data);
         try{
             $client=new SoapClient("https://wswhomo.afip.gov.ar/wsfev1/service.asmx?wsdl", $options);
             $results=$client->FECAEARegInformativo($data); 
@@ -98,7 +98,8 @@ class  FECAEARegInformativo{
             if (is_soap_fault($results)){
                 exit("SOAP Fault: ".$results->faultcode."\n".$results->faultstring."\n");
             }
-            var_dump($results->FECAEARegInformativoResult);
+            // var_dump($results->FECAEARegInformativoResult);
+
             return $results->FECAEARegInformativoResult;
         }catch(SoapFault $e){
             echo "Error: " . $e->getMessage();

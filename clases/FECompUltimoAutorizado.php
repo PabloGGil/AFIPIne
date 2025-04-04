@@ -1,6 +1,6 @@
 <?php
 $path_cli = __DIR__ . '/../';
-echo $path_cli;
+// echo $path_cli;
 include_once $path_cli . "clases/class.Auth.php";
 class UltimoAutorizado{
    private $dataAuth;
@@ -29,7 +29,7 @@ class UltimoAutorizado{
                 ],
             ]),
         ];
-        var_dump($data);
+        // var_dump($data);
         try{
             $client=new SoapClient("https://wswhomo.afip.gov.ar/wsfev1/service.asmx?wsdl", $options);
            
