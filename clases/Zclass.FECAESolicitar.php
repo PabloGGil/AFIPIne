@@ -105,29 +105,29 @@ class  ZFECAESolicitar{
         // $this->cbteAsocCuit=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['CbtesAsoc']['Cuit'];
         // $this->cbteAsocCbteFch=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['CbtesAsoc']['CbteFch'];
        
-        $this->tributos=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Tributos'];
+        // $this->tributos=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Tributos'];
         // $this->tribId=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Tributos']['Id'];
         // $this->tribDesct=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Tributos']['Desc'];
         // $this->tribBaseImp=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Tributos']['BaseImp'];
         // $this->tribAlic=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Tributos']['Alic'];
         // $this->tribImporte=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Tributos']['Importe'];
-        $this->iva=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Iva'];
+        // $this->iva=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Iva'];
         // $this->ivaId=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Iva']['Id'];
         // $this->ivaBaseImp=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Iva']['BaseImp'];
         // $this->ivaImporte=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Iva']['Importe'];
-        $this->opcionales=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Opcionales'];        
+        // $this->opcionales=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Opcionales'];        
         // $this->opcId=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Opcionales']['Id'];
         // $this->opcValor=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Opcionales']['Valor'];
 
-        $this->compradores=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Compradores'];
+        // $this->compradores=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Compradores'];
         // $this->compradorDocTipo=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Compradores']['DocTipo'];
         // $this->compradorDocNro=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Compradores']['DocNro'];
         // $this->compradorPorcentaje=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Compradores']['Porcentaje'];
-        $this->periodoAsociados=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['PeriodoAsoc'];
+        // $this->periodoAsociados=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['PeriodoAsoc'];
         // $this->pasocFchDesde=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['PeriodoAsoc']['FchDesde'];
         // $this->pasocFchHasta=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['PeriodoAsoc']['FchDesde'];
         
-        $this->actividades=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Actividades'];
+        // $this->actividades=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Actividades'];
         // $this->actId=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Actividades']['Id'];
     
     }
@@ -162,19 +162,19 @@ class  ZFECAESolicitar{
                             'MonId'=>$this->MonId,
                             'MonCotiz'=>$this->MonCotiz,
           
-                            'CbtesAsoc'=>$this->cbtesAsociados,
+                            // 'CbtesAsoc'=>$this->cbtesAsociados,
  
-                             'Tributos'=>$this->tributos,
+                            //  'Tributos'=>$this->tributos,
 
-                             'Iva'=>$this->iva,
+                            //  'Iva'=>$this->iva,
  
-                             'Opcionales'=>$this->opcionales,
+                            //  'Opcionales'=>$this->opcionales,
  
-                             'Compradores'=>$this->compradores,           
+                            //  'Compradores'=>$this->compradores,           
  
-                             'PeriodoAsoc'=>$this->periodoAsociados,
+                            //  'PeriodoAsoc'=>$this->periodoAsociados,
  
-                             'Actividades'=>$this->actividades,
+                            //  'Actividades'=>$this->actividades,
                         ],
                     ],
                 ],

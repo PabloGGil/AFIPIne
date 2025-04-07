@@ -52,7 +52,7 @@ class CompConsultar{
             if (is_soap_fault($results)){
                 exit("SOAP Fault: ".$results->faultcode."\n".$results->faultstring."\n");
             }
-            // var_dump($results->FECompConsultarResult);
+            return($results->FECompConsultarResult);
         }catch(SoapFault $e){
             echo "Error: " . $e->getMessage();
         }

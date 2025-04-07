@@ -12,7 +12,7 @@
 		},
 		FeDetReq: {
 			FECAEDetRequest: {
-				Concepto: 3 ,
+				Concepto: 1 ,
 				DocTipo: 80,
 				DocNro: 30711529280,
 				CbteDesde: 0,
@@ -23,58 +23,58 @@
 				ImpNeto: 200,
 				ImpOpEx: 0,
 				ImpTrib: 0,
-				ImpIVA: 0,
-				FchServDesde: "20250301",
-				FchServHasta: "20250401",
+			  ImpIVA: 0,
+				FchServDesde: "",
+				FchServHasta: "",
 				FchVtoPago: "",
 				MonId: "PES",
 				MonCotiz: 1,
-				// CbtesAsoc: 
-				// [{
-				// 	Tipo: 11,
-				// 	PtoVta: 2,
-				// 	Nro: 4160,
-				// 	Cuit: "",
-				// 	CbteFch: "20250330"
-				// },
-        // {
-				// 	Tipo: 11,
-				// 	PtoVta: 3,
-				// 	Nro: 99,
-				// 	Cuit: "",
-				// 	CbteFch: "20250330"
-				// }],
-				Tributos:
-				[ {
-						Id: "",
-						Desc: "",
-						BaseImp: "",
-						Alic: "",
-						Importe: ""
-				}],
-				Iva: [{
-						Id: "",
-						BaseImp: "",
-						Importe: ""
-				}],
-				Opcionales: 
+				CbtesAsoc: 
 				[{
-						Id: "",
-						Valor: ""
-				}],
-				Compradores: 
-				[{
-
-						DocTipo: "",
-						DocNro: "",
-						Porcentaje: ""
-				}],
-				PeriodoAsoc: 
-				{
-					FchDesde: "",
-					FchHasta: ""
+					Tipo: 11,
+					PtoVta: 2,
+					Nro: 4160,
+					Cuit: "",
+					CbteFch: "20250330"
 				},
-				Actividades: [{	Id: ""}],
+        {
+					Tipo: 11,
+					PtoVta: 3,
+					Nro: 99,
+					Cuit: "",
+					CbteFch: "20250330"
+				}],
+				// Tributos:
+				// [ {
+				// 		Id: "",
+				// 		Desc: "",
+				// 		BaseImp: "",
+				// 		Alic: "",
+				// 		Importe: ""
+				// }],
+				// Iva: [{
+				// 		Id: "",
+				// 		BaseImp: "",
+				// 		Importe: ""
+				// }],
+				// Opcionales: 
+				// [{
+				// 		Id: "",
+				// 		Valor: ""
+				// }],
+				// Compradores: 
+				// [{
+
+				// 		DocTipo: "",
+				// 		DocNro: "",
+				// 		Porcentaje: ""
+				// }],
+				// PeriodoAsoc: 
+				// {
+				// 	FchDesde: "",
+				// 	FchHasta: ""
+				// },
+				// Actividades: [{	Id: ""}],
 			},
 		},
 	},
@@ -142,21 +142,7 @@ document.getElementById('fileInput').addEventListener('change', function(event) 
 });
 
 function enviarDatos(datos) {
-    // $.ajax({
-    //     url: 'AjaxClAfip.php',
-    //     type: 'POST',
-    //     data: { datos: JSON.stringify(datos) },
-    //     success: function(response) {
-    //         alert('Datos enviados con éxito: '  );
-    //         var_dump(response);
-    //     },
-    //     error: function() {
-    //         alert('Error al enviar los datos');
-    //     }
-    // });
-    //  convertir datos a la estuctura a mandar
-
-    const jsonString = JSON.stringify(datos);
+  const jsonString = JSON.stringify(datos);
   const xhr = new XMLHttpRequest();
 
   
@@ -167,16 +153,16 @@ function enviarDatos(datos) {
     if (this.readyState == 4 && this.status == 200) {
       
       var respuesta =JSON.parse( this.responseText);
-      if (respuesta.Errors.length!=0){
+      // if (respuesta.Errors.length!=0){
+      if (respuesta.FeDetResp.FECAEDetResponse.Resultado!="A"){
       
-        window.alert(respuesta.Errors.Err.Msg);
+        window.alert(respuesta.FeDetResp.FECAEDetResponse.Observaciones.Obs[0].Msg);
       }
       else {
-        windows.alert("recibi rta")
+        windows.alert("recibi rta");
         // listar();
       }
     }
-  
   }
 }
 function consultarDatos(tipo){
