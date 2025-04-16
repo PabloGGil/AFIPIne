@@ -1,3 +1,6 @@
+ 
+ const filaInicialData=4;
+ const filaNombreColumnas=3;
  var parametrosFe= {
 	Auth: {
 		Token: "",
@@ -44,7 +47,7 @@
 					Cuit: "",
 					CbteFch: "20250330"
 				}],
-				// Tributos:
+				Tributos:null,
 				// [ {
 				// 		Id: "",
 				// 		Desc: "",
@@ -82,13 +85,14 @@
  
 
 
-console.log(parametrosFe.Auth.Token);
+// console.log(parametrosFe.Auth.Token);
 
 document.getElementById('fileInput').addEventListener('change', function(event) {
     let file = event.target.files[0];
     let reader = new FileReader();
     
     reader.onload = function(e) {
+		nfila=filaInicialData;
         let data = new Uint8Array(e.target.result);
         let workbook = XLSX.read(data, { type: 'array' });
         let sheet = workbook.Sheets[workbook.SheetNames[0]];
@@ -103,7 +107,7 @@ document.getElementById('fileInput').addEventListener('change', function(event) 
             let thAction = document.createElement('th');
             thAction.textContent = 'Acción';
             tableHeader.appendChild(thAction);
-            jsonData[1].forEach(header => {
+            jsonData[filaNombreColumnas-1].forEach(header => {
                 let th = document.createElement('th');
                 th.textContent = header;
                 tableHeader.appendChild(th);
@@ -111,19 +115,21 @@ document.getElementById('fileInput').addEventListener('change', function(event) 
             
             //-------------------
             
-            jsonData.slice(2).forEach(row => {
+            jsonData.slice(filaInicialData).forEach(row => {
                 let tr = document.createElement('tr');
                 
                 let tdAction = document.createElement('td');
                 let btn = document.createElement('button');
-                btn.textContent = 'Enviar';
+                btn.id="b_"+nfila;
+				btn.textContent = 'Enviar';
                 btn.classList.add('btn', 'btn-primary', 'btn-sm');
                 btn.onclick = function() {
-                    // enviarDatos(row);
+                    enviarDatos(btn.id.split("_")[1]);
                     mandanga={q:'solicitar',info:parametrosFe}
-                    enviarDatos(mandanga);
+                    //enviarDatos(mandanga);
                     // consultarDatos('tipoDocumento');
                 };
+				nfila++;
                 tdAction.appendChild(btn);
                 tr.appendChild(tdAction);
                 tableBody.appendChild(tr);
@@ -144,7 +150,8 @@ document.getElementById('fileInput').addEventListener('change', function(event) 
 function enviarDatos(datos) {
   const jsonString = JSON.stringify(datos);
   const xhr = new XMLHttpRequest();
-
+  const datosTabla = recolectarDatosTabla(datos);
+  console.log(datosTabla);
   
   xhr.open("POST", "vista/ajax/AjaxClAfip.php");
   xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
@@ -159,7 +166,7 @@ function enviarDatos(datos) {
         window.alert(respuesta.FeDetResp.FECAEDetResponse.Observaciones.Obs[0].Msg);
       }
       else {
-        windows.alert("recibi rta");
+        window.alert("recibi rta");
         // listar();
       }
     }
@@ -176,7 +183,31 @@ function consultarDatos(tipo){
       if (this.readyState == 4 && this.status == 200) {
         let data = JSON.parse(this.responseText);
         // var_dump(data);
-      }
+      }                 	
     
     }
 }
+
+function  recolectarDatosTabla(n) {
+		const tabla = document.querySelector('table');
+		const filas = tabla.querySelectorAll('tr');
+		const headers = Array.from(filas[0].querySelectorAll('th, td')).map(h => h.textContent.trim());
+		const datos = [];
+		
+		// for (let i = 1; i < filas.length; i++) {
+		//   const celdas = filas[i].querySelectorAll('td');
+		const celdas = filas[n].querySelectorAll('td');  
+		const filaData = {};
+		  
+		  celdas.forEach((celda, index) => {
+			filaData[headers[index]] = celda.textContent.trim();
+		  });
+		  
+		//   datos.push(filaData);
+		// }
+		
+		// return datos;
+		return filaData;
+	  }
+  
+  

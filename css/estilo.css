@@ -1,3 +1,17 @@
+* {
+    margin: 0;
+    border: none;
+    padding: none;
+    box-sizing: border-box;
+  }
+.cabecera{
+    background-color: blue;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: x-large;
+    font-weight: bolder;
+    color:white;
+    text-align: center;
+  }
 body {
     background-color: #f8f9fa;
     padding: 20px;

@@ -105,7 +105,7 @@ class  ZFECAESolicitar{
         // $this->cbteAsocCuit=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['CbtesAsoc']['Cuit'];
         // $this->cbteAsocCbteFch=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['CbtesAsoc']['CbteFch'];
        
-        // $this->tributos=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Tributos'];
+        $this->tributos=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Tributos'];
         // $this->tribId=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Tributos']['Id'];
         // $this->tribDesct=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Tributos']['Desc'];
         // $this->tribBaseImp=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Tributos']['BaseImp'];
@@ -161,10 +161,10 @@ class  ZFECAESolicitar{
                             'ImpIVA'=>$this->ImpIVA,
                             'MonId'=>$this->MonId,
                             'MonCotiz'=>$this->MonCotiz,
-          
-                            // 'CbtesAsoc'=>$this->cbtesAsociados,
- 
-                            //  'Tributos'=>$this->tributos,
+                           
+                            'CbtesAsoc'=>$this->cbtesAsociados,
+                           
+                            'Tributos'=>$this->tributos,
 
                             //  'Iva'=>$this->iva,
  
