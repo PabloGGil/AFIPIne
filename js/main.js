@@ -26,35 +26,37 @@
 				ImpNeto: 200,
 				ImpOpEx: 0,
 				ImpTrib: 0,
-			  ImpIVA: 0,
+			  	ImpIVA: 0,
 				FchServDesde: "",
 				FchServHasta: "",
 				FchVtoPago: "",
 				MonId: "PES",
 				MonCotiz: 1,
-				CbtesAsoc: 
-				[{
-					Tipo: 11,
-					PtoVta: 2,
-					Nro: 4160,
-					Cuit: "",
-					CbteFch: "20250330"
-				},
-        {
-					Tipo: 11,
-					PtoVta: 3,
-					Nro: 99,
-					Cuit: "",
-					CbteFch: "20250330"
-				}],
-				Tributos:null,
-				// [ {
+		 		CbtesAsoc:
+				[
+		// 		{	Tipo: 11,
+		// 			PtoVta: 2,
+		// 			Nro: 4160,
+		// 			Cuit: "",
+		// 			CbteFch: "20250330"
+		// 		},
+        // {
+		// 			Tipo: 11,
+		// 			PtoVta: 3,
+		// 			Nro: 99,
+		// 			Cuit: "",
+		// 			CbteFch: "20250330"
+				// }
+				],
+		 		Tributos:[
+				//  {
 				// 		Id: "",
 				// 		Desc: "",
 				// 		BaseImp: "",
 				// 		Alic: "",
 				// 		Importe: ""
-				// }],
+				// }
+				],
 				// Iva: [{
 				// 		Id: "",
 				// 		BaseImp: "",
@@ -83,7 +85,35 @@
 	},
  };
  
+ function  recolectarDatosTabla(n) {
+	parametrosFe.FeCAEReq.FeCabReq.PtoVta=jsonData[n][3];
+	parametrosFe.FeCAEReq.FeCabReq.CbteTipo=jsonData[n][1];
 
+	parametrosFe.FeCAEReq.FeDetReq.FECAEDetRequest.Concepto=jsonData[n][2];
+	parametrosFe.FeCAEReq.FeDetReq.FECAEDetRequest.DocTipo=jsonData[n][7];
+	parametrosFe.FeCAEReq.FeDetReq.FECAEDetRequest.DocNro=jsonData[n][8];
+	// Se CbteDesde se busca desde el php consultando el proximo comprobante
+	// parametrosFe.FeCAEReq.FeDetReq.FECAEDetRequest.CbteDesde=jsonData[n][3];
+	// parametrosFe.FeCAEReq.FeDetReq.FECAEDetRequest.CbteHasta=jsonData[n][3];
+	anio=jsonData[n][0].split("/")[2];
+	mes=jsonData[n][0].split("/")[1];
+	dia=jsonData[n][0].split("/")[0];
+	parametrosFe.FeCAEReq.FeDetReq.FECAEDetRequest.CbteFch=jsonData[n][0];//anio+mes+dia;
+	parametrosFe.FeCAEReq.FeDetReq.FECAEDetRequest.ImpTotal=jsonData[n][17];
+	parametrosFe.FeCAEReq.FeDetReq.FECAEDetRequest.ImpTotConc=jsonData[n][3];
+	parametrosFe.FeCAEReq.FeDetReq.FECAEDetRequest.ImpNeto=jsonData[n][3];
+	parametrosFe.FeCAEReq.FeDetReq.FECAEDetRequest.ImpOpEx=jsonData[n][3];
+	parametrosFe.FeCAEReq.FeDetReq.FECAEDetRequest.ImpTrib=jsonData[n][3];
+	parametrosFe.FeCAEReq.FeDetReq.FECAEDetRequest.ImpIVA= jsonData[n][16]=="" ? jsonData[n][16] : 0;
+	parametrosFe.FeCAEReq.FeDetReq.FECAEDetRequest.FchServDesde=jsonData[n][3];
+	parametrosFe.FeCAEReq.FeDetReq.FECAEDetRequest.FchServHasta=jsonData[n][3];
+	parametrosFe.FeCAEReq.FeDetReq.FECAEDetRequest.FchVtoPago=jsonData[n][3];
+	// parametrosFe.FeCAEReq.FeDetReq.FeCAEDetRequest.MonId=jsonData[n][3];
+	// parametrosFe.FeCAEReq.FeDetReq.FeCAEDetRequest.MonCotiz=jsonData[n][3];
+
+	return parametrosFe;
+}
+let jsonData=[];
 
 // console.log(parametrosFe.Auth.Token);
 
@@ -96,7 +126,7 @@ document.getElementById('fileInput').addEventListener('change', function(event) 
         let data = new Uint8Array(e.target.result);
         let workbook = XLSX.read(data, { type: 'array' });
         let sheet = workbook.Sheets[workbook.SheetNames[0]];
-        let jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: '' });
+        jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: '' });
         
         if (jsonData.length > 0) {
             let tableHeader = document.getElementById('tableHeader');
@@ -117,16 +147,17 @@ document.getElementById('fileInput').addEventListener('change', function(event) 
             
             jsonData.slice(filaInicialData).forEach(row => {
                 let tr = document.createElement('tr');
-                
+                tr.id='fila_'+nfila;
                 let tdAction = document.createElement('td');
                 let btn = document.createElement('button');
-                btn.id="b_"+nfila;
+                btn.id="b_"+ nfila;
 				btn.textContent = 'Enviar';
                 btn.classList.add('btn', 'btn-primary', 'btn-sm');
                 btn.onclick = function() {
-                    enviarDatos(btn.id.split("_")[1]);
-                    mandanga={q:'solicitar',info:parametrosFe}
-                    //enviarDatos(mandanga);
+                    const datosTabla = recolectarDatosTabla(btn.id.split("_")[1]);
+					// enviarDatos();
+                    // mandanga={q:'solicitar',info:parametrosFe}
+                    enviarDatos({q:'solicitar',info:parametrosFe});
                     // consultarDatos('tipoDocumento');
                 };
 				nfila++;
@@ -136,7 +167,8 @@ document.getElementById('fileInput').addEventListener('change', function(event) 
                 
                 jsonData[0].forEach((_, index) => {
                     let td = document.createElement('td');
-                    td.textContent = row[index] || '';
+                    // td.id=
+					td.textContent = row[index] || '';
                     tr.appendChild(td);
                 });
                 
@@ -148,11 +180,13 @@ document.getElementById('fileInput').addEventListener('change', function(event) 
 });
 
 function enviarDatos(datos) {
+//   console.table(jsonData[datos]);
   const jsonString = JSON.stringify(datos);
   const xhr = new XMLHttpRequest();
-  const datosTabla = recolectarDatosTabla(datos);
-  console.log(datosTabla);
   
+//   console.log(datosTabla);
+  
+
   xhr.open("POST", "vista/ajax/AjaxClAfip.php");
   xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
   xhr.send(jsonString);
@@ -160,10 +194,27 @@ function enviarDatos(datos) {
     if (this.readyState == 4 && this.status == 200) {
       
       var respuesta =JSON.parse( this.responseText);
-      // if (respuesta.Errors.length!=0){
-      if (respuesta.FeDetResp.FECAEDetResponse.Resultado!="A"){
-      
-        window.alert(respuesta.FeDetResp.FECAEDetResponse.Observaciones.Obs[0].Msg);
+      console.log(respuesta);
+	  
+	  if(Object.hasOwn(respuesta.Errors, 'Err')){
+		errores=respuesta.Errors.Err;
+		console.log(respuesta.Errors.Err)
+		// let errores="";
+		// for (const error of errores) {
+		// 	errores=errores +(`Código: ${error.Code} -  Mensaje: ${error.Msg} \n`);
+		// }
+		MostrarErrores(errores,1);
+		
+	  } else if(respuesta.FeDetResp.FECAEDetResponse.Resultado!="A"){
+    	if(respuesta.FeDetResp.FECAEDetResponse.Observaciones.hasOwnProperty('Obs')){
+			const obs=respuesta.FeDetResp.FECAEDetResponse.Observaciones.Obs
+			// let observaciones="";
+			// for (const error of obs) {
+			// 	observaciones=observaciones +(`Código: ${error.Code} -  Mensaje: ${error.Msg} \n`);
+			// }
+			// window.alert(observaciones);
+			MostrarErrores(obs,2);
+		}
       }
       else {
         window.alert("recibi rta");
@@ -188,26 +239,40 @@ function consultarDatos(tipo){
     }
 }
 
-function  recolectarDatosTabla(n) {
-		const tabla = document.querySelector('table');
-		const filas = tabla.querySelectorAll('tr');
-		const headers = Array.from(filas[0].querySelectorAll('th, td')).map(h => h.textContent.trim());
-		const datos = [];
-		
-		// for (let i = 1; i < filas.length; i++) {
-		//   const celdas = filas[i].querySelectorAll('td');
-		const celdas = filas[n].querySelectorAll('td');  
-		const filaData = {};
-		  
-		  celdas.forEach((celda, index) => {
-			filaData[headers[index]] = celda.textContent.trim();
-		  });
-		  
-		//   datos.push(filaData);
-		// }
-		
-		// return datos;
-		return filaData;
-	  }
+function MostrarErrores(data,tipo){
+	const container = document.getElementById('errores-container');
+	const totalErrores = document.getElementById('total-errores');
+	const modal=document.getElementById('Modal');
+
+	// Mostrar el total de errores
+	totalErrores.textContent = data.length;
+
+	// Generar HTML para cada error
+	data.forEach(error => {
+		const errorHTML = `
+			<div class="error-card">
+				<div class="error-code">Error ${error.Code}</div>
+				<div class="error-message">${error.Msg}</div>
+			</div>
+		`;
+		container.innerHTML += errorHTML;
+	});
+	if (tipo==1){
+		let zz=document.getElementById("mensaje");
+		zz.innerText="Errores informados";
+		let boton=document.getElementById("fila_4");
+		boton.style.backgroundColor='red';
+	}else{
+		let zz=document.getElementById("mensaje");
+		zz.innerText="Observaciones informadas";
+		let boton=document.getElementById("fila_4");
+		boton.style.backgroundColor='orange';
+	}
+
+	
+	myModal=new bootstrap.Modal(document.getElementById('Modal'));
+	myModal.show();
+	
+}
   
   

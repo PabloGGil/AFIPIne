@@ -30,3 +30,45 @@ td[contenteditable="true"] {
     background-color: #fff3cd;
     outline: none;
 }
+
+.errbody {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    color: #333;
+}
+.errh1 {
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 30px;
+}
+.error-container {
+    margin-bottom: 30px;
+}
+.error-card {
+    background-color: #f8d7da;
+    border-left: 5px solid #dc3545;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.error-code {
+    font-weight: bold;
+    color: #dc3545;
+    margin-bottom: 5px;
+}
+.error-message {
+    color: #721c24;
+}
+.error-count {
+    background-color: #dc3545;
+    color: white;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 0.9em;
+    margin-left: 10px;
+}
+</style>
