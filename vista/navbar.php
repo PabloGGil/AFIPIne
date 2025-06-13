@@ -26,7 +26,7 @@ include 'head.php';
                  <li><a class="dropdown-item" href="#">Tipos de concepto</a></li>
                  <li><a class="dropdown-item" href="#">Condicion IVA Receptor</a></li>
                  <li><a class="dropdown-item" href="#">Tipos de documento</a></li>
-                 <li><a class="dropdown-item" href="#">Tipos de documento</a></li>
+                 <li><a class="dropdown-item" href="vista/Consulta.php">Consultar Comprobantes</a></li>
               </ul>
            </li>
          </ul>

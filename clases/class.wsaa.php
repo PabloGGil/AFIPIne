@@ -7,8 +7,9 @@
 # Ver las definiciones abajo
 # Salida:
 # TA.xml: El ticket de acceso otorgado por el WSAA
-// define ("RPATH",__DIR__ . '/../');
-include_once RPATH .'config/class.Config.php';
+//  define ("RPATH",__DIR__ . '/../');
+ include_once RPATH .'config/class.Config.php';
+// include_once 'config/class.Config.php';
 
 
 

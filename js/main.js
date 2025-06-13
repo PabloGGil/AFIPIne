@@ -1,6 +1,7 @@
  
  const filaInicialData=4;
  const filaNombreColumnas=3;
+ let filaSelecionada=undefined;
  var parametrosFe= {
 	Auth: {
 		Token: "",
@@ -20,13 +21,13 @@
 				DocNro: 30711529280,
 				CbteDesde: 0,
 				CbteHasta: 0,
-				CbteFch: "20250404",
+				CbteFch: "2025/0404",
 				ImpTotal: 200,
 				ImpTotConc:0 ,
 				ImpNeto: 200,
 				ImpOpEx: 0,
 				ImpTrib: 0,
-			  	ImpIVA: 0,
+			  	ImpIVA: 20,
 				FchServDesde: "",
 				FchServHasta: "",
 				FchVtoPago: "",
@@ -34,21 +35,21 @@
 				MonCotiz: 1,
 		 		CbtesAsoc:
 				[
-		// 		{	Tipo: 11,
-		// 			PtoVta: 2,
-		// 			Nro: 4160,
-		// 			Cuit: "",
-		// 			CbteFch: "20250330"
-		// 		},
-        // {
-		// 			Tipo: 11,
-		// 			PtoVta: 3,
-		// 			Nro: 99,
-		// 			Cuit: "",
-		// 			CbteFch: "20250330"
-				// }
+				{	Tipo: 11,
+					PtoVta: 2,
+					Nro: 4160,
+					Cuit: "",
+					CbteFch: "20250330"
+				},
+        {
+					Tipo: 11,
+					PtoVta: 3,
+					Nro: 99,
+					Cuit: "",
+					CbteFch: "20250330"
+				}
 				],
-		 		Tributos:[
+		 		// Tributos:[
 				//  {
 				// 		Id: "",
 				// 		Desc: "",
@@ -56,7 +57,7 @@
 				// 		Alic: "",
 				// 		Importe: ""
 				// }
-				],
+				// ],
 				// Iva: [{
 				// 		Id: "",
 				// 		BaseImp: "",
@@ -98,12 +99,12 @@
 	anio=jsonData[n][0].split("/")[2];
 	mes=jsonData[n][0].split("/")[1];
 	dia=jsonData[n][0].split("/")[0];
-	parametrosFe.FeCAEReq.FeDetReq.FECAEDetRequest.CbteFch=jsonData[n][0];//anio+mes+dia;
+	parametrosFe.FeCAEReq.FeDetReq.FECAEDetRequest.CbteFch=anio+mes+dia;////jsonData[n][0];//
 	parametrosFe.FeCAEReq.FeDetReq.FECAEDetRequest.ImpTotal=jsonData[n][17];
-	parametrosFe.FeCAEReq.FeDetReq.FECAEDetRequest.ImpTotConc=jsonData[n][3];
-	parametrosFe.FeCAEReq.FeDetReq.FECAEDetRequest.ImpNeto=jsonData[n][3];
-	parametrosFe.FeCAEReq.FeDetReq.FECAEDetRequest.ImpOpEx=jsonData[n][3];
-	parametrosFe.FeCAEReq.FeDetReq.FECAEDetRequest.ImpTrib=jsonData[n][3];
+	parametrosFe.FeCAEReq.FeDetReq.FECAEDetRequest.ImpTotConc=jsonData[n][13];
+	parametrosFe.FeCAEReq.FeDetReq.FECAEDetRequest.ImpNeto=jsonData[n][12];
+	parametrosFe.FeCAEReq.FeDetReq.FECAEDetRequest.ImpOpEx=jsonData[n][14];
+	parametrosFe.FeCAEReq.FeDetReq.FECAEDetRequest.ImpTrib=jsonData[n][15];
 	parametrosFe.FeCAEReq.FeDetReq.FECAEDetRequest.ImpIVA= jsonData[n][16]=="" ? jsonData[n][16] : 0;
 	parametrosFe.FeCAEReq.FeDetReq.FECAEDetRequest.FchServDesde=jsonData[n][3];
 	parametrosFe.FeCAEReq.FeDetReq.FECAEDetRequest.FchServHasta=jsonData[n][3];
@@ -155,6 +156,7 @@ document.getElementById('fileInput').addEventListener('change', function(event) 
                 btn.classList.add('btn', 'btn-primary', 'btn-sm');
                 btn.onclick = function() {
                     const datosTabla = recolectarDatosTabla(btn.id.split("_")[1]);
+					filaSelecionada=btn.id.split("_")[1];
 					// enviarDatos();
                     // mandanga={q:'solicitar',info:parametrosFe}
                     enviarDatos({q:'solicitar',info:parametrosFe});
@@ -196,9 +198,10 @@ function enviarDatos(datos) {
       var respuesta =JSON.parse( this.responseText);
       console.log(respuesta);
 	  
-	  if(Object.hasOwn(respuesta.Errors, 'Err')){
-		errores=respuesta.Errors.Err;
-		console.log(respuesta.Errors.Err)
+	  if(Object.hasOwn(respuesta, 'Errors')){
+		const errores=respuesta.Errors.Err;
+		console.log(respuesta.Errors);
+		
 		// let errores="";
 		// for (const error of errores) {
 		// 	errores=errores +(`Código: ${error.Code} -  Mensaje: ${error.Msg} \n`);
@@ -217,8 +220,16 @@ function enviarDatos(datos) {
 		}
       }
       else {
-        window.alert("recibi rta");
-        // listar();
+        let zz=document.getElementById("mensaje");
+		zz.innerText="Errores informados";
+		let fila=document.getElementById("fila_"+filaSelecionada);
+		fila.style.backgroundColor='lightgreen';
+		fila.cells[7].textContent=respuesta.FeDetResp.FECAEDetResponse.CAE;
+		fila.cells[6].textContent=respuesta.FeDetResp.FECAEDetResponse.CAE;
+		let boton=document.getElementById("b_"+filaSelecionada);
+		boton.disabled=true;
+		// window.alert("recibi rta");
+        
       }
     }
   }
@@ -242,30 +253,44 @@ function consultarDatos(tipo){
 function MostrarErrores(data,tipo){
 	const container = document.getElementById('errores-container');
 	const totalErrores = document.getElementById('total-errores');
+	// const totalErrores = document.getElementById('mensaje');
 	const modal=document.getElementById('Modal');
 
-	// Mostrar el total de errores
-	totalErrores.textContent = data.length;
+	if (Array.isArray(data)){
+		// Mostrar el total de errores
+		totalErrores.textContent = data.length;
 
-	// Generar HTML para cada error
-	data.forEach(error => {
-		const errorHTML = `
-			<div class="error-card">
-				<div class="error-code">Error ${error.Code}</div>
-				<div class="error-message">${error.Msg}</div>
-			</div>
-		`;
-		container.innerHTML += errorHTML;
-	});
+		// Generar HTML para cada error
+		data.forEach(error => {
+			const errorHTML = `
+				<div class="error-card">
+					<div class="error-code">Error ${error.Code}</div>
+					<div class="error-message">${error.Msg}</div>
+				</div>
+			`;
+			container.innerHTML += errorHTML;
+		});
+	}else{
+		// totalErrores.textContent ="1";
+		// if (tipo==1){
+			const errorHTML = `
+				<div class="error-card">
+					<div class="error-code">Error ${data.Code}</div>
+					<div class="error-message">${data.Msg}</div>
+				</div>
+			`;
+			container.innerHTML =errorHTML;
+		// }
+	}
 	if (tipo==1){
 		let zz=document.getElementById("mensaje");
 		zz.innerText="Errores informados";
-		let boton=document.getElementById("fila_4");
-		boton.style.backgroundColor='red';
+		let boton=document.getElementById("fila_"+filaSelecionada);
+		boton.style.backgroundColor='lightred';
 	}else{
 		let zz=document.getElementById("mensaje");
 		zz.innerText="Observaciones informadas";
-		let boton=document.getElementById("fila_4");
+		let boton=document.getElementById("fila_"+filaSelecionada);
 		boton.style.backgroundColor='orange';
 	}
 

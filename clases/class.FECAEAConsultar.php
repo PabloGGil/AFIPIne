@@ -10,30 +10,32 @@ include_once $path_cli . 'clases/class.Auth.php';
 </FeCompConsReq>
 ----------------------------------*/
 
-class CompConsultar{
+class FECAEAConsultar{
      
-    private $dataAuth;
+    public $dataAuth;
     
-    function __construct(  private $cbtetipo, private $cbtenro, private $ptovta){
+    function __construct(  private $periodo, private $orden){
         $x=new Auth();
+        $this->dataAuth=new Auth();
         $this->dataAuth=$x->getAuthData();
-        // $this->dataAuth['Cuit']=30711529280;
+        $this->dataAuth['Cuit']="27273556333";
         // var_dump($this->dataAuth);
 
     }
 
    
     function getData(){
-        $dataAuth=new Auth();
+         $dataAuth=new Auth();
+        //  $this->dataAuth.setCuit("30711529280");
         $data=[
-            
+           
             'Auth' =>$this->dataAuth,
-            'FeCompConsReq'=>[
+            // 'FeCompConsReq'=>[
                 
-                'CbteNro' =>$this->cbtenro,
-                'PtoVta' => $this->ptovta,
-                'CbteTipo' =>$this->cbtetipo,
-            ]
+                'Periodo' =>$this->periodo,
+                'Orden' => $this->orden,
+                
+            // ]
         ];
         $options = [
             'stream_context' => stream_context_create([
@@ -46,13 +48,13 @@ class CompConsultar{
         //   var_dump($data);
         try{
             $client=new SoapClient("https://wswhomo.afip.gov.ar/wsfev1/service.asmx?wsdl", $options);
-            $results=$client->FECompConsultar($data); 
+            $results=$client->FECAEAConsultar($data); 
             file_put_contents("wsfe.xml",$client-> __getLastRequest()); 
             file_put_contents("wsfe.xml",$client-> __getLastResponse()); 
             if (is_soap_fault($results)){
                 exit("SOAP Fault: ".$results->faultcode."\n".$results->faultstring."\n");
             }
-            return($results->FECompConsultarResult);
+            return($results->FECAEAConsultarResult);
         }catch(SoapFault $e){
             echo "Error: " . $e->getMessage();
         }

@@ -57,14 +57,18 @@ if (isset($_GET['q'])) {
             $ajInst=new TiposConcepto();
             $res=$ajInst->getData();
             break;
-        // tipo de Documento
-        case 'tipoDocumento':
-            $ajInst=new TiposDoc();
-            $res=$ajInst->getData();
-            break;
+        // // tipo de Documento
+        // case 'tipoDocumento':
+        //     $ajInst=new TiposDoc();
+        //     $res=$ajInst->getData();
+        //     break;
         // Ultimo Autorizado
         case 'ultAutorizado':
             $ajInst=new UltimoAutorizado(2,11);
+            $res=$ajInst->getData();
+            break;
+        case 'ConsultaComprobante':
+            $ajInst=new CompConsultar(11,10,3);
             $res=$ajInst->getData();
             break;
         // case 'solicitar':

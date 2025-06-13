@@ -1,67 +1,72 @@
-document.getElementById('fileInput').addEventListener('change', function(event) {
-    let file = event.target.files[0];
-    let reader = new FileReader();
-    
-    reader.onload = function(e) {
-        let data = new Uint8Array(e.target.result);
-        let workbook = XLSX.read(data, { type: 'array' });
-        let sheet = workbook.Sheets[workbook.SheetNames[0]];
-        let jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: '' });
-        
-        if (jsonData.length > 0) {
-            let tableHeader = document.getElementById('tableHeader');
-            let tableBody = document.querySelector('#dataTable tbody');
-            tableHeader.innerHTML = '';
-            tableBody.innerHTML = '';
-            // Cabecera --------
-            let thAction = document.createElement('th');
-            thAction.textContent = 'Acción';
-            tableHeader.appendChild(thAction);
-            jsonData[1].forEach(header => {
-                let th = document.createElement('th');
-                th.textContent = header;
-                tableHeader.appendChild(th);
-            });
-            
-            //-------------------
-            
-            jsonData.slice(2).forEach(row => {
-                let tr = document.createElement('tr');
-                
-                let tdAction = document.createElement('td');
-                let btn = document.createElement('button');
-                btn.textContent = 'Enviar';
-                btn.classList.add('btn', 'btn-primary', 'btn-sm');
-                btn.onclick = function() {
-                    enviarDatos(row);
-                };
-                tdAction.appendChild(btn);
-                tr.appendChild(tdAction);
-                tableBody.appendChild(tr);
-                
-                jsonData[0].forEach((_, index) => {
-                    let td = document.createElement('td');
-                    td.textContent = row[index] || '';
-                    tr.appendChild(td);
-                });
-                
-            });
+// const xhr = new XMLHttpRequest();
+// xhr.open("POST", "vista/ajax/AjaxClAfip.php");
+// xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+// xhr.send(jsonString);
+// xhr.onreadystatechange = function () {
+//   if (this.readyState == 4 && this.status == 200) {
+const urlParams = new URLSearchParams(window.location.search);
+const nombre = urlParams.get('consulta');
+console.log(nombre);
+function enviarDatos() {
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", "../vista/ajax/AjaxClAfip.php?q=tipoComprobante");
+    xhr.onload = () => {      
+        // console.log(JSON.stringify(this.responseText));
+        if (xhr.status >= 200 && xhr.status ==200) {
+            // La solicitud fue exitosa
+            try {
+                mostrarTabla(JSON.parse(xhr.responseText));
+              
+            } catch (e) {
+                window.alert("no anduvio")
+            }
         }
-    };
-    
-    reader.readAsArrayBuffer(file);
-});
-
-function enviarDatos(datos) {
-    $.ajax({
-        url: 'AjaxClAfip.php',
-        type: 'POST',
-        data: { datos: JSON.stringify(datos) },
-        success: function(response) {
-            alert('Datos enviados con éxito: ' + response);
-        },
-        error: function() {
-            alert('Error al enviar los datos');
-        }
-    });
+    }
+    xhr.send(null);
 }
+
+function mostrarTabla(data) {
+    const contenedor = document.getElementById('json-data');
+    
+    // Crear tabla
+    const tabla = document.createElement('table');
+    
+    // Crear encabezado
+    const thead = document.createElement('thead');
+    const headerRow = document.createElement('tr');
+    const conceptos=data.coleccion.ResultGet.CbteTipo;
+    // Obtener las claves del primer objeto para los encabezados
+    const headers = Object.keys(conceptos[0]);
+    
+    headers.forEach(header => {
+        const th = document.createElement('th');
+        th.textContent = header.trim(); // Eliminar espacios en blanco
+        headerRow.appendChild(th);
+    });
+    
+    thead.appendChild(headerRow);
+    tabla.appendChild(thead);
+    
+    // Crear cuerpo de la tabla
+    const tbody = document.createElement('tbody');
+    
+    conceptos.forEach(concepto => {
+        const row = document.createElement('tr');
+        
+        headers.forEach(header => {
+            const td = document.createElement('td');
+            // Mostrar "Nulo" si el valor es "NULL", de lo contrario mostrar el valor
+            td.textContent = concepto[header] === "NULL" ? "Nulo" : concepto[header];
+            row.appendChild(td);
+        });
+        
+        tbody.appendChild(row);
+    });
+    
+    tabla.appendChild(tbody);
+    contenedor.appendChild(tabla);
+}
+
+// Llamar a la función con los datos
+// mostrarTabla(data.ConceptoTipo);
+enviarDatos();
