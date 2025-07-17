@@ -71,6 +71,10 @@ if (isset($_GET['q'])) {
             $ajInst=new CompConsultar(11,10,3);
             $res=$ajInst->getData();
             break;
+         case 'ConsultaPeriodo':
+            $ajInst=new FECAEAConsultar(202503,2);
+            $res=$ajInst->getData();
+            break;
         // case 'solicitar':
         //     $ajInst=new FECAESolicitar($data);
         //     $res=$ajInst->getData();

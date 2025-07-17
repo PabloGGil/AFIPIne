@@ -4,19 +4,20 @@ $path_cli = __DIR__ . '/../';
 include_once $path_cli .'clases/class.Auth.php';
 include_once $path_cli . 'clases/FECompUltimoAutorizado.php';
 include_once $path_cli . 'clases/class.CompAsociados.php';
+
 class  ZFECAESolicitar{  
 
     // cabecera ---
-    private $CantReg=1;
-    private $PtoVta=2;
-    private $CbteTipo=11;
+    private $CantReg;
+    private $PtoVta;
+    private $CbteTipo;
     //-------------
-    private $Concepto=1;
-    private $DocTipo=80;
-    private $DocNro=30711529280;
-    private $CbteDesde=2;
-    private $CbteHasta=2;
-    private $CbteFch='20250206';
+    private $Concepto;
+    private $DocTipo;
+    private $DocNro;
+    // private $CbteDesde=2;
+    // private $CbteHasta=2;
+    private $CbteFch;
     private $ImpTotal=20000;
     private $ImpTotConc=0;
     private $ImpNeto=20000;
@@ -80,75 +81,75 @@ class  ZFECAESolicitar{
     }
    
     function CargaRegistro($reg){
-        $this->PtoVta=$reg['FeCAEReq']['FeCabReq']['PtoVta'];
-        $this->CbteTipo=$reg['FeCAEReq']['FeCabReq']['CbteTipo'];
+        $this->PtoVta=$reg['PtoVta'];
+        $this->CbteTipo=$reg['CbteTipo'];
         
-        $this->Concepto=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Concepto'];
-        $this->DocTipo=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['DocTipo'];
-        $this->DocNro=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['DocNro'];
-        $this->CbteDesde=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['CbteDesde'];
-        $this->CbteHasta=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['CbteHasta'];
-        $this->CbteFch=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['CbteFch'];
-        $this->ImpTotal=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['ImpTotal'];
-        $this->ImpTotConc=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['ImpTotConc'];
-        $this->ImpNeto=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['ImpNeto'];
-        $this->ImpOpEx=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['ImpOpEx'];
-        $this->ImpTrib=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['ImpTrib'];
-        $this->ImpIVA=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['ImpIVA'];
-        $this->FchServDesde=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['ImpIVA'];
-        $this->FchServHasta=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['ImpIVA'];
-        $this->FchVtoPago=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['ImpIVA'];
-        $this->MonId=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['MonId'];
-        $this->MonCotiz=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['MonCotiz'];
+        $this->Concepto=$reg['Concepto'];
+        $this->DocTipo=$reg['DocTipo'];
+        $this->DocNro=$reg['DocNro'];
+        // $this->CbteDesde=$reg['CbteDesde'];
+        // $this->CbteHasta=$reg['CbteHasta'];
+        $this->CbteFch=$reg['CbteFch'];
+        $this->ImpTotal=$reg['ImpTotal'];
+        $this->ImpTotConc=$reg['ImpTotConc'];
+        $this->ImpNeto=$reg['ImpNeto'];
+        $this->ImpOpEx=$reg['ImpOpEx'];
+        $this->ImpTrib=$reg['ImpTrib'];
+        $this->ImpIVA=$reg['ImpIVA'];
+        $this->FchServDesde=$reg['ImpIVA'];
+        $this->FchServHasta=$reg['ImpIVA'];
+        $this->FchVtoPago=$reg['ImpIVA'];
+        $this->MonId=$reg['MonId'];
+        $this->MonCotiz=$reg['MonCotiz'];
         
-        if(isset($reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['CbtesAsoc'])){
-             $this->cbtesAsociados=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['CbtesAsoc'];
+        if(isset($reg['CbtesAsoc'])){
+             $this->cbtesAsociados=$reg['CbtesAsoc'];
          }else{$this->cbtesAsociados=null;}
-        // $this->cbteAsocTipo=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['CbtesAsoc']['Tipo'];
-        // $this->cbteAsocPtoVta=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['CbtesAsoc']['PtoVta'];
-        // $this->cbteAsocNro=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['CbtesAsoc']['Nro'];
-        // $this->cbteAsocCuit=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['CbtesAsoc']['Cuit'];
-        // $this->cbteAsocCbteFch=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['CbtesAsoc']['CbteFch'];
-       if (isset($reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Tributos'])){
-            $this->tributos=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Tributos'];
+        // $this->cbteAsocTipo=$reg['CbtesAsoc']['Tipo'];
+        // $this->cbteAsocPtoVta=$reg['CbtesAsoc']['PtoVta'];
+        // $this->cbteAsocNro=$reg['CbtesAsoc']['Nro'];
+        // $this->cbteAsocCuit=$reg['CbtesAsoc']['Cuit'];
+        // $this->cbteAsocCbteFch=$reg['CbtesAsoc']['CbteFch'];
+       if (isset($reg['Tributos'])){
+            $this->tributos=$reg['Tributos'];
        }else{$this->tributos=null;}
-        // $this->tribId=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Tributos']['Id'];
-        // $this->tribDesct=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Tributos']['Desc'];
-        // $this->tribBaseImp=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Tributos']['BaseImp'];
-        // $this->tribAlic=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Tributos']['Alic'];
-        // $this->tribImporte=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Tributos']['Importe'];
-        if (isset($reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Iva'])){
-            $this->iva=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Iva'];
+        // $this->tribId=$reg['Tributos']['Id'];
+        // $this->tribDesct=$reg['Tributos']['Desc'];
+        // $this->tribBaseImp=$reg['Tributos']['BaseImp'];
+        // $this->tribAlic=$reg['Tributos']['Alic'];
+        // $this->tribImporte=$reg['Tributos']['Importe'];
+        if (isset($reg['Iva'])){
+            $this->iva=$reg['Iva'];
         }
         else{  $this->iva=null;      }
         
-        // $this->ivaId=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Iva']['Id'];
-        // $this->ivaBaseImp=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Iva']['BaseImp'];
-        // $this->ivaImporte=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Iva']['Importe'];
-        if (isset($reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Opcionales'])){
-            $this->opcionales=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Opcionales'];
+        // $this->ivaId=$reg['Iva']['Id'];
+        // $this->ivaBaseImp=$reg['Iva']['BaseImp'];
+        // $this->ivaImporte=$reg['Iva']['Importe'];
+        if (isset($reg['Opcionales'])){
+            $this->opcionales=$reg['Opcionales'];
         }else{$this->opcionales=null;}
-        // $this->opcionales=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Opcionales'];        
-        // $this->opcId=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Opcionales']['Id'];
-        // $this->opcValor=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Opcionales']['Valor'];
-        if (isset($reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Compradores'])){
-            $this->compradores=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Compradores'];
+        // $this->opcionales=$reg['Opcionales'];        
+        // $this->opcId=$reg['Opcionales']['Id'];
+        // $this->opcValor=$reg['Opcionales']['Valor'];
+        if (isset($reg['Compradores'])){
+            $this->compradores=$reg['Compradores'];
         }else{$this->compradores=null;}
-        // $this->compradores=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Compradores'];
-        // $this->compradorDocTipo=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Compradores']['DocTipo'];
-        // $this->compradorDocNro=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Compradores']['DocNro'];
-        // $this->compradorPorcentaje=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Compradores']['Porcentaje'];
-        if (isset($reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['PeriodoAsoc'])){
-            $this->periodoAsociados=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['PeriodoAsoc'];
+        // $this->compradores=$reg['Compradores'];
+        // $this->compradorDocTipo=$reg['Compradores']['DocTipo'];
+        // $this->compradorDocNro=$reg['Compradores']['DocNro'];
+        // $this->compradorPorcentaje=$reg['Compradores']['Porcentaje'];
+        if (isset($reg['PeriodoAsoc'])){
+            $this->periodoAsociados=$reg['PeriodoAsoc'];
         }else{$this->periodoAsociados=null;}
-        // $this->periodoAsociados=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['PeriodoAsoc'];
-        // $this->pasocFchDesde=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['PeriodoAsoc']['FchDesde'];
-        // $this->pasocFchHasta=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['PeriodoAsoc']['FchDesde'];
-        if (isset($reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Actividades'])){
-            $this->actividades=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Actividades'];
+        // $this->periodoAsociados=$reg['PeriodoAsoc'];
+        // $this->pasocFchDesde=$reg['PeriodoAsoc']['FchDesde'];
+        // $this->pasocFchHasta=$reg['PeriodoAsoc']['FchDesde'];
+        if (isset($reg['Actividades'])){
+            $this->actividades=$reg['Actividades'];
         }else{ $this->actividades=null;}
-        // $this->actividades=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Actividades'];
-        // $this->actId=$reg['FeCAEReq']['FeDetReq']['FECAEDetRequest']['Actividades']['Id'];
+        // $this->actividades=$reg['Actividades'];
+        // $this->actId=$reg['Actividades']['Id'];
     
     }
     function sendData(){

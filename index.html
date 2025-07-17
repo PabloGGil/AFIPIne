@@ -59,14 +59,20 @@
         <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#Modal">
           Mostrar formulario
         </button> -->
-        <div class="table-responsive">
-          <table class="table  table-striped table-bordered text-center" id="dataTable">
-            <thead class="table-secondary" >
-                <tr id="tableHeader"></tr>
-            </thead>
-            <tbody></tbody>
-          </table>
+        <div >
+          <p id="docEmisor">Nro. Documento/CUIL/CUIT del emisor :  </p>
+          <button id="EnviarSeleccion" class="btn btn-primary">Enviar Seleccionados</button>
         </div>
+        
+          <div class="table-responsive" style="overflow-x: auto;width: 100%; display: block;">
+            <table class="table  table-striped table-bordered text-center" id="dataTable">
+              <thead class="table-primary" >
+                  <tr id="tableHeader"></tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        
       <!-- </main>  -->
       <!-- Modal  -->
       <div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="productoModalLabel" aria-hidden="false">

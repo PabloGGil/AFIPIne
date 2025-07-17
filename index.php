@@ -42,7 +42,8 @@ define ("TKT_AUTH","archivos/tktaut.xml");
  // $aux=new CondicionIvaReceptor();
 // var_dump($aux->getData());
 // $fecae=new CompConsultar(11,6,4);
-$fecae=new FECAEAConsultar(202503,2);
+// $
+$fecae=new CompConsultar(11,3,4);
 
 $result=$fecae->getData();
 var_dump($result);
