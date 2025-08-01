@@ -1,0 +1,6 @@
+{
+    "CERT": "certs/PabloTest.pem",
+    "PRIVATEKEY":"certs/PabloTest.key",
+    "PASSPHRASE": "metro100", 
+    "URL":"https://afip.gov.ar/ws/services/LoginCms"   
+}

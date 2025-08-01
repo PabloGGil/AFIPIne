@@ -7,7 +7,7 @@
 # Ver las definiciones abajo
 # Salida:
 # TA.xml: El ticket de acceso otorgado por el WSAA
-//  define ("RPATH",__DIR__ . '/../');
+// define ("RPATH",__DIR__ . '/../');
  include_once RPATH .'config/class.Config.php';
 // include_once 'config/class.Config.php';
 
@@ -25,34 +25,41 @@ class WSAA{
 
     function __construct($serv)
     {
-       
-        $service=$serv; 
-        // veriicar si existen los archivos
-        if (!file_exists(RPATH .Config::TKT_AUTH)) {
+        try{            
+            $z=RPATH ;
+            Config::load();
+            $service=$serv; 
+            $x=Config::get("TKT_AUTH");
+            // verificar si existen los archivos
+            if (!file_exists(RPATH. Config::get("TKT_AUTH"))) {
 
-            // echo "<br>el archivo  ".Config::TKT_AUTH. "no existe; se va a crear" ;
-            $this->CreaLoginTkt('wsfe');
-            $cms=$this->FirmaLoginTkt();
-            $auth=$this->CallWSAA($cms);
-        }
-        elseif($this->tktExpirado() || !file_exists(RPATH.Config::TKT_AUTH)){
-            // $wsaa=new WSAA();
-            $this->CreaLoginTkt('wsfe');
-            $cms=$this->FirmaLoginTkt();
-            $auth=$this->CallWSAA($cms);
-            // var_dump($auth);
-        }
-        $ta = fopen(RPATH . Config::TKT_AUTH, "rb");
-        $xmlstr = stream_get_contents($ta);
-        fclose($ta);
-        $tadata = new SimpleXMLElement($xmlstr);
+                // echo "<br>el archivo  ".Config::TKT_AUTH. "no existe; se va a crear" ;
+                $this->CreaLoginTkt('wsfe');
+                $cms=$this->FirmaLoginTkt();
+                $auth=$this->CallWSAA($cms);
+            }
+            elseif($this->tktExpirado() || !file_exists(RPATH.Config::get("TKT_AUTH"))){
+                // $wsaa=new WSAA();
+                $this->CreaLoginTkt('wsfe');
+                $cms=$this->FirmaLoginTkt();
+                $auth=$this->CallWSAA($cms);
+                // var_dump($auth);
+            }
+            $ta = fopen(RPATH . Config::get("TKT_AUTH"), "rb");
+            $xmlstr = stream_get_contents($ta);
+            fclose($ta);
+            $tadata = new SimpleXMLElement($xmlstr);
 
-        $this->token=$tadata->credentials->token;
-        $this->sign=$tadata->credentials->sign;
-        $qit=$tadata->header->destination;
-       
-        preg_match('/CUIT (\d{11})/', $qit, $matches);
-        $this->cuit=intval($matches[1]);  
+            $this->token=$tadata->credentials->token;
+            $this->sign=$tadata->credentials->sign;
+            $qit=$tadata->header->destination;
+        
+            preg_match('/CUIT (\d{11})/', $qit, $matches);
+            $this->cuit=intval($matches[1]);  
+        }catch(\Exception $e){
+            echo "Error en constructor: " . $e->getMessage();
+            
+        }
     }
 
     public function getToken(){
@@ -90,7 +97,7 @@ class WSAA{
         date_default_timezone_set('UTC');
         $fechaExpiracion=$this->get_expiration();
         $fechaActual=date('c');
-        // var_dump($fechaActual);
+        
         if ($fechaActual < $fechaExpiracion) {
             // echo "<br>La fecha aún no ha expirado.";
             return false;
@@ -98,14 +105,11 @@ class WSAA{
             // echo "<br>La fecha ha expirado.";
             return true;
         }
-        
-        // $r = DateTime($nose['header']['expirationTime']);
-    
     }
 
     function get_expiration()
     {
-        $ta = fopen(RPATH . Config::TKT_AUTH, 'r');
+        $ta = fopen(RPATH . Config::get("TKT_AUTH"), 'r');
         
         $xmlstr = stream_get_contents($ta);
         fclose($ta);
@@ -131,7 +135,7 @@ class WSAA{
         $TRA->header->addChild('generationTime',date('c',date('U')-60));
         $TRA->header->addChild('expirationTime',date('c',date('U')+86400));
         $TRA->addChild('service',$service);
-        $TRA->asXML( RPATH . Config::LOG_TKT);
+        $TRA->asXML( RPATH . Config::get("LOG_TKT"));
     }
 
 /* --------------------------------------------------------
@@ -142,12 +146,12 @@ class WSAA{
     function FirmaLoginTkt()
     {
         
-        if (!file_exists(RPATH . Config::LOG_TKT)) {
-            exit("Failed to open". Config::LOG_TKT ."\n");
+        if (!file_exists(RPATH . Config::get("LOG_TKT"))) {
+            exit("Failed to open". Config::get("LOG_TKT") ."\n");
         }
     // $STATUS=openssl_pkcs7_sign("../archivos/TRA.xml", "../archivos/TRA.tmp", CERT,array(PRIVATEKEY),array(),!PKCS7_DETACHED);
     
-        $command = "openssl cms -sign -in  ". RPATH . Config::LOG_TKT ." -out ". RPATH. Config::LOG_TKT_FIRM. " -signer ". RPATH. Config::CERT ." -inkey ".RPATH.  Config::PRIVATEKEY ." -nodetach -outform PEM";
+        $command = "openssl cms -sign -in  ". RPATH . Config::get("LOG_TKT") ." -out ". RPATH. Config::get("LOG_TKT_FIRM"). " -signer ". RPATH. Config::get("CERT") ." -inkey ". RPATH . Config::get("PRIVATEKEY") ." -nodetach -outform PEM";
       
         exec($command, $output, $STATUS);
         // $STATUS=openssl_pkcs7_sign("../archivos/TRA.xml","../archivos/TRA.tmp",CERT,array(PRIVATEKEY),array(),PKCS7_DETACHED);
@@ -155,10 +159,10 @@ class WSAA{
         if ($STATUS) {
             exit("ERROR generating PKCS#7 signature\n");
         }
-        $inf=fopen(RPATH . Config::LOG_TKT_FIRM, "r");
+        $inf=fopen(RPATH . Config::get("LOG_TKT_FIRM"), "r");
         $i=0;
         $CMS="";
-        $nroFilas=count(file(RPATH . Config::LOG_TKT_FIRM));
+        $nroFilas=count(file(RPATH . Config::get("LOG_TKT_FIRM")));
         while (!feof($inf))
         {
             
@@ -186,7 +190,7 @@ class WSAA{
                     ],
                 ]),
             ];
-            $client=new SoapClient(RPATH . Config::WSDL, $options);
+            $client=new SoapClient(RPATH .Config::get("WSDL"), $options);
             $results=$client->loginCms(array('in0'=>$CMS)); 
             file_put_contents("requestloginCms.xml",$client-> __getLastRequest()); 
             file_put_contents("responseloginCms.xml",$client-> __getLastResponse()); 
@@ -194,14 +198,15 @@ class WSAA{
                 exit("SOAP Fault: ".$results->faultcode."\n".$results->faultstring."\n");
             } 
             // var_dump($results->loginCmsReturn);
-            $tktauth=fopen(RPATH . Config::TKT_AUTH,"w");
+            $tktauth=fopen(RPATH . Config::get("TKT_AUTH"),"w");
             fwrite($tktauth,$results->loginCmsReturn);
             fclose($tktauth);
             return  $results->loginCmsReturn;
 
         }
         catch (SoapFault $e){
-            echo "<br>Error: " . $e->getMessage();
+        // echo "<br>Error: " . $e->getMessage();
+            throw new \Exception("Something went wrong!");
         }
     }
 }

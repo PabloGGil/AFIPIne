@@ -1,0 +1,10 @@
+{
+        "LOG_TKT": "archivos/LoginTicket.xml",
+        "LOG_TKT_FIRM":"archivos/TAF.tmp", 
+        "PROXY_HOST":"",
+        "PROXY_PORT":"",
+        "TKT_AUTH":"archivos/tktaut.xml",
+        "WSDL": "clases/wsaa.wsdl"
+}
+
+  

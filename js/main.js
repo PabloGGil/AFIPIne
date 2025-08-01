@@ -85,8 +85,25 @@
 const filaNombreColumnas=4;
 const filaInicialData=5;
 let filaSelecionada=undefined;
-let dataErr=[];		// array para los errores 
+let dataLog=[];		// array para los errores y observaciones
 let jsonData=[];	// Contiene los datos del excel
+let file="";
+
+// boton para seleccionar todos los checkbox
+document.getElementById('SeleccionarTodo').addEventListener('click',()=>{
+	for (const checkbox of document.querySelectorAll('table input[type="checkbox"]')) {
+		checkbox.checked=true;
+	}
+});
+
+// boton para desmarcar todos los checkbox
+document.getElementById('LimpiarSeleccion').addEventListener('click',()=>{
+for (const checkbox of document.querySelectorAll('table input[type="checkbox"]:checked')) {
+		checkbox.checked=false;
+	}
+});
+
+// boton de envío múltiple
 document.getElementById('EnviarSeleccion').addEventListener('click', EnvioMultiple)
 
 /* Funcion para escribir un excel con los errores que se produjeron
@@ -94,37 +111,39 @@ document.getElementById('EnviarSeleccion').addEventListener('click', EnvioMultip
 */
 function escribidor(data){
 	// formateo fecha para el nombre de archivo
-	let fechaFile=new Date().toISOString()
-  .slice(0, 10)
-  .replace(/-/g, '');
-//   console.log(ahora);
-// 	data['Fecha']=ahora;
-	// Crear un libro de Excel y una hoja
+	let fechaFile=new Date().toLocaleString()
+		.slice(0, 16)
+		.replace(/\//g, '').replace(/:/g, '').replace(/,/g, '');
+	let nombreArchivo="ResultadosEnvio"+fechaFile+".xlsx"
+	// Cargo los datos del resultado en la primer hoja
 	const workbook = XLSX.utils.book_new();
 	const worksheet = XLSX.utils.json_to_sheet(data);
-	
-	// let fechaFile= ahora.getFullYear() + ahora.getMonth() + ahora.getDay() + ahora.getMilliseconds();
-	// fechaFile=ahora;
-	// console.log("Año:" +ahora.getFullYear() + "mes: "+ahora.getMonth() + "dia:"+ahora.getDay() + "mili:"+ ahora.getMilliseconds())
-	// Añadir la hoja al libro
-	XLSX.utils.book_append_sheet(workbook, worksheet, "Hoja1");
+	XLSX.utils.book_append_sheet(workbook, worksheet, "Resultados");
 
+    // Cargo los datos del archivo original en la segunda hoja
+    const worksheet1 = XLSX.utils.json_to_sheet(jsonData);
+    XLSX.utils.book_append_sheet(workbook, worksheet1, "Original");
+	
 	// Guardar el archivo en disco
-	XLSX.writeFile(workbook, "Errores_"+fechaFile +".xlsx");
+	XLSX.writeFile( workbook, nombreArchivo);
 	console.log("¡Archivo Excel creado con éxito!");
+	
+	window.alert("Archivo " + nombreArchivo + " creado en descargas");
 }
 
 
-function EnvioMultiple(){
-	datosEnviar=[];
+ async function EnvioMultiple(){
 	const chkcant=document.querySelectorAll('table input[type="checkbox"]:checked');
-	if(chkcant.length!=0){
-		document.querySelectorAll('table input[type="checkbox"]:checked').forEach(checkbox => {
-			var par=lcdtm(checkbox.id);
-			enviarDatos({q:'solicitar',info:par},checkbox.id);
-		});
-		console.log(datosEnviar);
-	}
+	if (chkcant.length != 0) {
+        // Usar for...of en lugar de forEach para poder usar await
+        for (const checkbox of document.querySelectorAll('table input[type="checkbox"]:checked')) {
+            var par = lcdtm(checkbox.id);
+            let z= await enviarDatos({ q: 'solicitar', info: par }, checkbox.id);
+        }
+        // console.log(datosEnviar);
+        escribidor(dataLog);
+    }
+	dataLog=[];
  }
 
 
@@ -164,10 +183,20 @@ function lcdtm(n){
 	return datosFila;
 }
 
+// limpiar la tabla y volver al inicio
+document.getElementById('LimpiarTabla').addEventListener('click',()=>{
+	let tableHeader = document.getElementById('tableHeader');
+    let tableBody = document.querySelector('#dataTable tbody');
+	tableHeader.innerHTML = '';
+    tableBody.innerHTML = '';
+	window.location.href="http://localhost";
+});
 
 document.getElementById('fileInput').addEventListener('change', function(event) {
-    let file = event.target.files[0];
+    file = event.target.files[0];
     let reader = new FileReader();
+	let tableHeader = document.getElementById('tableHeader');
+	let tableBody = document.querySelector('#dataTable tbody');
     
     reader.onload = function(e) {
 		nfila=filaInicialData-1;
@@ -177,15 +206,12 @@ document.getElementById('fileInput').addEventListener('change', function(event) 
         jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: '',blankrows: false });
         
         if (jsonData.length > 0) {
-            let tableHeader = document.getElementById('tableHeader');
-            let tableBody = document.querySelector('#dataTable tbody');
+ 
             tableHeader.innerHTML = '';
             tableBody.innerHTML = '';
-            // Cabecera --------
-			// let thcheck = document.createElement('th');
-            // thcheck.textContent = 'Check';
-			// tableHeader.appendChild(thcheck);
-            let thAction = document.createElement('th');
+
+			// Armar Cabecera --------
+			let thAction = document.createElement('th');
             thAction.textContent = 'Acción';
             tableHeader.appendChild(thAction);
             jsonData[filaNombreColumnas-1].forEach(header => {
@@ -194,7 +220,7 @@ document.getElementById('fileInput').addEventListener('change', function(event) 
                 tableHeader.appendChild(th);
             });
             
-            //-------------------
+            //  Armar Body -------------------
             let DocEmisor=document.getElementById('docEmisor');
 			DocEmisor.innerText=DocEmisor.innerText + jsonData[2][3];
             jsonData.slice(filaInicialData-1).forEach(row => {
@@ -211,7 +237,6 @@ document.getElementById('fileInput').addEventListener('change', function(event) 
                 btn.classList.add('btn', 'btn-primary', 'btn-sm');
                 btn.onclick = function() {
 					filaSelecionada=btn.id.split("_")[1];
-
 					var par=lcdtm(btn.id.split("_")[1]);
 					enviarDatos({q:'solicitar',info:par},filaSelecionada);
                 };
@@ -223,29 +248,45 @@ document.getElementById('fileInput').addEventListener('change', function(event) 
                 
                 jsonData[0].forEach((_, index) => {
                     let td = document.createElement('td');
-                    // td.id=
 					td.textContent = row[index] || '';
                     tr.appendChild(td);
                 });
-                
             });
         }
     };   
     reader.readAsArrayBuffer(file);
 });
 
-function enviarDatos(datos,nfila) {
 
-  const jsonString = JSON.stringify(datos);
-  const xhr = new XMLHttpRequest();
+
+async function enviarDatos(datos,nfila) {
+
   
-  xhr.open("POST", "vista/ajax/AjaxClAfip.php");
-  xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-  xhr.send(jsonString);
-  xhr.onreadystatechange = function () {
-    if (this.readyState == 4 && this.status == 200) {
-      
-      var respuesta =JSON.parse( this.responseText);
+	try{
+		const response=await fetch( "vista/ajax/AjaxClAfip.php",{
+			method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(datos)
+		}); 
+		if (!response.ok) {
+					throw new Error(`Error en el servidor: ${response.status}`);
+		}
+        
+        const resultado = await response.json();
+        console.log("Éxito:", resultado);
+		procesarRespuesta(resultado,nfila);
+        return resultado;
+    } catch (error) {
+        console.error("Error en enviarDatos:", error);
+        throw error; 
+    }
+}
+
+
+function procesarRespuesta(respuestaFetch,nfila){
+	respuesta =respuestaFetch;
       console.log(respuesta);
 	  
 	  if(Object.hasOwn(respuesta, 'Errors')){
@@ -266,26 +307,21 @@ function enviarDatos(datos,nfila) {
 		fila.style.backgroundColor='lightgreen';
 		fila.cells[7].textContent=respuesta.FeDetResp.FECAEDetResponse.CAE;
 		fila.cells[6].textContent=respuesta.FeDetResp.FECAEDetResponse.CAE;
+		// deshabilito boton enviar de la fila
 		let boton=document.getElementById("b_"+nfila);
 		boton.disabled=true;
+		// deshabilito el checkbox
 		let chk=document.getElementById(+nfila);
-		chk.disabled=true;
+		chk.checked=false;
+		chk.disable=true;
+		dataLog.push ({ Tipo: "OK",Fila: nfila,Fecha:fechaActual , CAE:respuesta.FeDetResp.FECAEDetResponse.CAE });
       }
-    }
-  }
-  if(dataErr.length>0){
-  	escribidor(dataErr);
-	dataErr=[];
-  }
 }
 
 function consultarDatos(tipo){
-    // const jsonString = JSON.stringify("");
     const xhr = new XMLHttpRequest();
     xhr.open("get", "vista/ajax/AjaxClAfip.php?q=" + tipo);
     xhr.send();
-  
-   
     xhr.onreadystatechange = function () {
       if (this.readyState == 4 && this.status == 200) {
         let data = JSON.parse(this.responseText);
@@ -295,6 +331,15 @@ function consultarDatos(tipo){
     }
 }
 
+let fechaActual=new Date().toISOString()
+		.slice(0, 10)
+		.replace(/-/g, '');
+/*----
+Funcion MostrarErrores
+data: array de objetos
+tipo : 1 ->error , 2->observacion
+nfila: fila que corresponde a los datos
+----*/
 function MostrarErrores(data,tipo,nfila){
 	const container = document.getElementById('errores-container');
 	const totalErrores = document.getElementById('total-errores');
@@ -304,7 +349,6 @@ function MostrarErrores(data,tipo,nfila){
 	if (Array.isArray(data)){
 		// Mostrar el total de errores
 		totalErrores.textContent = data.length;
-
 		// Generar HTML para cada error
 		data.forEach(error => {
 			const errorHTML = `
@@ -313,9 +357,8 @@ function MostrarErrores(data,tipo,nfila){
 					<div class="error-message">${error.Msg}</div>
 				</div>
 			`;
-			dataErr.push ({ Fila: nfila, Codigo:error.Code, Error: error.Msg }),
-			console.log(dataErr);
-
+			dataLog.push ({ Tipo: "Error",Fila: nfila,Fecha:fechaActual , Codigo:error.Code, Error: error.Msg }),
+			console.log(dataLog);
 			container.innerHTML += errorHTML;
 		});
 	}else{
@@ -325,9 +368,11 @@ function MostrarErrores(data,tipo,nfila){
 					<div class="error-message">${data.Msg}</div>
 				</div>
 			`;
-			dataErr.push ({ Fila: nfila, Codigo:data.Code, Error: data.Msg }),
+			
+			dataLog.push ({ Tipo: "Observaciones",Fila: nfila++,Fecha:fechaActual , Codigo:data.Code, Error: data.Msg }),
 			container.innerHTML =errorHTML;
-			console.log(dataErr);
+			console.log(dataLog);
+			// escribidor(dataLog);
 	}
 	if (tipo==1){
 		let zz=document.getElementById("mensaje");
@@ -340,10 +385,5 @@ function MostrarErrores(data,tipo,nfila){
 		let boton=document.getElementById("fila_"+nfila);
 		boton.style.backgroundColor='orange';
 	}
-
-	myModal=new bootstrap.Modal(document.getElementById('Modal'));
-	// myModal.show();
-	
 }
-  
   

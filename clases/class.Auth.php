@@ -1,7 +1,7 @@
 <?php
 //include_once 'wsaa-client.php';
 // define ("CUIT", 27273556333);
-define ("RPATH",__DIR__ . '/../');
+define ("RPATH",__DIR__ . '\\..\\');
 include_once RPATH .'config/class.Config.php';
 
 class Auth{
@@ -11,8 +11,9 @@ class Auth{
     private $cuit;
 
     function __construct( ){
+        Config::load();
         $wsa=new WSAA("wsfe");
-        $ta = fopen(RPATH . Config::TKT_AUTH, "rb");
+        $ta = fopen(RPATH . Config::get("TKT_AUTH"), "rb");
         $xmlstr = stream_get_contents($ta);
         fclose($ta);
         $tadata = new SimpleXMLElement($xmlstr);

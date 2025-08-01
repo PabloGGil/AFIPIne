@@ -62,14 +62,18 @@
         <div >
           <p id="docEmisor">Nro. Documento/CUIL/CUIT del emisor :  </p>
           <button id="EnviarSeleccion" class="btn btn-primary">Enviar Seleccionados</button>
+          <button id="LimpiarTabla" class="btn btn-secondary">Limpiar tabla</button>
+          <button id="SeleccionarTodo" class="btn btn-secondary">Seleccionar Todos</button>
+          <button id="LimpiarSeleccion" class="btn btn-secondary">Limpiar Seleccion</button>
         </div>
-        
           <div class="table-responsive" style="overflow-x: auto;width: 100%; display: block;">
             <table class="table  table-striped table-bordered text-center" id="dataTable">
               <thead class="table-primary" >
                   <tr id="tableHeader"></tr>
               </thead>
-              <tbody></tbody>
+              <tbody>
+                <!-- aca se agregan las filas -->
+              </tbody>
             </table>
           </div>
         
@@ -80,23 +84,11 @@
           <div class="modal-content">
             <div class="modal-header">
               <h1 id="mensaje" class="errh1"> <span id="total-errores" class="error-count"></span></h1>
-              <!-- <h2 class="modal-title" id="productoModalLabel">Detalles del Producto</h2> -->
-              <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
             </div>
-            <div class="modal-body">
-           
-    
+            <div class="modal-body">          
               <div class="error-container" id="errores-container">
                   <!-- Los errores se insertarán aquí con JavaScript -->
               </div>
-              <!-- <form>
-                <div class="mb-3">
-                  <label for="nombreProducto" class="form-label">Nombre</label>
-                  <input type="text" class="form-control" id="nombreProducto">
-                </div> -->
-                <!-- más campos del formulario -->
-                <!-- <button type="submit" class="btn btn-primary">Enviar</button>
-              </form> -->
             </div>
             <div class="modal-footer">
               <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button> -->

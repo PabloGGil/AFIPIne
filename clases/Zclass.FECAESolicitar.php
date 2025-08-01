@@ -153,9 +153,11 @@ class  ZFECAESolicitar{
     
     }
     function sendData(){
+        // sleep(5);
         // Obtener el ultimo nro de comprobante
         $ultimo=new UltimoAutorizado($this->PtoVta,$this->CbteTipo);
         $prox=($ultimo->getData())+1 ;
+        // echo $prox;
         if($this->cbtesAsociados!=null){
             $data[]=['FeCAEReq'=>['FeDetReq'=>['FECAEDetRequest'=>['CbtesAsoc'=>$this->cbtesAsociados]]]];
         }

@@ -4,7 +4,7 @@
 $path_cli = __DIR__ . '/../../';
 // echo $path_cli;
 // echo __DIR__;
-include_once $path_cli . 'config/class.Config.php';
+// include_once $path_cli . 'config/class.Config.php';
 include_once $path_cli . 'clases/class.Auth.php';
 include_once $path_cli . 'clases/class.wsaa.php';
 include_once $path_cli . 'clases/class.FECAESolicitar.php';
@@ -17,7 +17,6 @@ include_once $path_cli . 'clases/class.TiposConcepto.php';
 include_once $path_cli . 'clases/FECompUltimoAutorizado.php';
 include_once $path_cli . 'clases/FEParamGetCondicionIvaReceptor.php';
 session_start();
-
 
 $json = file_get_contents('php://input');
 
@@ -37,9 +36,8 @@ $ret['msg'] = 'Falto parametro de consulta';
 $ret['info'] = array();
 $ret['msgerror']='';
 $retorno = array();
-// $_SESSION['buffer']=array();
 
-//$ret = 'error';
+
 if (isset($_GET['q'])) {
     switch ($_GET['q']) {
         // tipo de comprobante
