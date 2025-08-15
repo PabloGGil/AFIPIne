@@ -1,7 +1,7 @@
 
 {
-    "CERT": "certs/PabloTest.pem",
-    "PRIVATEKEY":"certs/PabloTest.key",
+    "CERT": "certs/Ine.pem",
+    "PRIVATEKEY":"certs/ine.key",
     "PASSPHRASE": "metro100", 
     "URL":"https://wsaahomo.afip.gov.ar/ws/services/LoginCms"   
 }

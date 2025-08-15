@@ -18,9 +18,9 @@ class  ZFECAESolicitar{
     // private $CbteDesde=2;
     // private $CbteHasta=2;
     private $CbteFch;
-    private $ImpTotal=20000;
+    private $ImpTotal=0;
     private $ImpTotConc=0;
-    private $ImpNeto=20000;
+    private $ImpNeto=0;
     private $ImpOpEx=0;
     private $ImpTrib=0;
     private $ImpIVA=0;
@@ -64,7 +64,7 @@ class  ZFECAESolicitar{
     
     private $actividades=array();
     private $actId;
-    // private $CondicionIVAReceptorId=15;
+    private $CondicionIVAReceptorId=6;
     private $dataAuth;
     // private $data;
 
@@ -102,6 +102,11 @@ class  ZFECAESolicitar{
         $this->MonId=$reg['MonId'];
         $this->MonCotiz=$reg['MonCotiz'];
         
+        if($this->Concepto=="2" || $this->Concepto=="3"){
+            $this->FchServDesde=$reg['FchServDesde'];
+            $this->FchServHasta=$reg['FchServHasta'];
+            $this->FchVtoPago=$reg['FchVtoPago'];
+        }
         if(isset($reg['CbtesAsoc'])){
              $this->cbtesAsociados=$reg['CbtesAsoc'];
          }else{$this->cbtesAsociados=null;}
@@ -152,6 +157,7 @@ class  ZFECAESolicitar{
         // $this->actId=$reg['Actividades']['Id'];
     
     }
+
     function sendData(){
         // sleep(5);
         // Obtener el ultimo nro de comprobante
@@ -196,7 +202,7 @@ class  ZFECAESolicitar{
                     ],
                     'FeDetReq'=>[
                         'FECAEDetRequest'=>[
-                            'CondicionIVAReceptorId' => 6,
+                            'CondicionIVAReceptorId' => $this->CondicionIVAReceptorId,
                             'Concepto'=>$this->Concepto,
                             'DocTipo'=>$this->DocTipo,
                             'DocNro'=>$this->DocNro,

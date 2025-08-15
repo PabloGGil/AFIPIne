@@ -82,13 +82,24 @@
 // 		},
 // 	},
 //  };
-const filaNombreColumnas=4;
-const filaInicialData=5;
+const filaExcelNombreCol=4
+const filaNombreColumnas=filaExcelNombreCol-1;
+const filaInicialData= filaNombreColumnas+1;
 let filaSelecionada=undefined;
 let dataLog=[];		// array para los errores y observaciones
 let jsonData=[];	// Contiene los datos del excel
 let file="";
 
+ window.addEventListener("beforeunload", function (e) {
+        // Aquí puedes ejecutar tu código
+        // Por ejemplo, guardar datos en localStorage
+        localStorage.setItem("miDato", "valor");
+        
+        // O mostrar un mensaje de confirmación
+        var confirmationMessage = "¿Estás seguro de que deseas cerrar la página?";
+        e.returnValue = confirmationMessage; // Gecko, Trident, Chrome 34+
+        return confirmationMessage; // Gecko, WebKit, Chrome <34
+      });
 // boton para seleccionar todos los checkbox
 document.getElementById('SeleccionarTodo').addEventListener('click',()=>{
 	for (const checkbox of document.querySelectorAll('table input[type="checkbox"]')) {
@@ -176,11 +187,37 @@ function lcdtm(n){
 	if(datosFila['MonId']=="$"){
 		datosFila['MonId']="PES";
 	}
-	anio=jsonData[n][0].split("/")[2];
-	mes=jsonData[n][0].split("/")[1];
-	dia=jsonData[n][0].split("/")[0];
-	datosFila['CbteFch']=anio+mes+dia;
+	// anio=jsonData[n][0].split("/")[2];
+	// mes=jsonData[n][0].split("/")[1];
+	// dia=jsonData[n][0].split("/")[0];
+	datosFila['CbteFch']=formatearFecha(n,0);
+	/* si el concepto es 2 o 3 deberian estar los campos que deben convertirse a formato YYYMMDD
+		FchServDesde
+		FchServHasta
+		FchVtoPago
+	*/
+	let FchServDesde=jsonData[n][38];
+	let FchServHasta=jsonData[n][39];
+	let FchVtoPago=jsonData[n][40];
+	let concepto=jsonData[n][2];
+
+
+	if(concepto=="2" && (FchServDesde=="" || FchServHasta=="" || FchVtoPago=="")){
+		window.alert("Concepto Servicios / Productos y Servicios debe tener fecha de inicio , fin y vencimiento");
+		return "";
+	}
+		datosFila['FchServDesde']=formatearFecha(n,38);
+		datosFila['FchServHasta']=formatearFecha(n,39);
+		datosFila['FchVtoPago']=formatearFecha(n,40);
+
 	return datosFila;
+}
+
+function formatearFecha(fila,indice){
+	anio=jsonData[fila][indice].split("/")[2];
+	mes=jsonData[fila][indice].split("/")[1];
+	dia=jsonData[fila][indice].split("/")[0];
+	return anio+mes+dia;
 }
 
 // limpiar la tabla y volver al inicio
@@ -199,7 +236,7 @@ document.getElementById('fileInput').addEventListener('change', function(event) 
 	let tableBody = document.querySelector('#dataTable tbody');
     
     reader.onload = function(e) {
-		nfila=filaInicialData-1;
+		nfila=filaInicialData;
         let data = new Uint8Array(e.target.result);
         let workbook = XLSX.read(data, { type: 'array' });
         let sheet = workbook.Sheets[workbook.SheetNames[0]];
@@ -214,7 +251,7 @@ document.getElementById('fileInput').addEventListener('change', function(event) 
 			let thAction = document.createElement('th');
             thAction.textContent = 'Acción';
             tableHeader.appendChild(thAction);
-            jsonData[filaNombreColumnas-1].forEach(header => {
+            jsonData[filaNombreColumnas].forEach(header => {
                 let th = document.createElement('th');
                 th.textContent = header;
                 tableHeader.appendChild(th);
@@ -223,7 +260,7 @@ document.getElementById('fileInput').addEventListener('change', function(event) 
             //  Armar Body -------------------
             let DocEmisor=document.getElementById('docEmisor');
 			DocEmisor.innerText=DocEmisor.innerText + jsonData[2][3];
-            jsonData.slice(filaInicialData-1).forEach(row => {
+            jsonData.slice(filaInicialData).forEach(row => {
                 let tr = document.createElement('tr');
                 tr.id='fila_'+nfila;
 				
@@ -238,6 +275,9 @@ document.getElementById('fileInput').addEventListener('change', function(event) 
                 btn.onclick = function() {
 					filaSelecionada=btn.id.split("_")[1];
 					var par=lcdtm(btn.id.split("_")[1]);
+					if(par==""){
+						return;
+					}
 					enviarDatos({q:'solicitar',info:par},filaSelecionada);
                 };
 				nfila++;
@@ -369,7 +409,7 @@ function MostrarErrores(data,tipo,nfila){
 				</div>
 			`;
 			
-			dataLog.push ({ Tipo: "Observaciones",Fila: nfila++,Fecha:fechaActual , Codigo:data.Code, Error: data.Msg }),
+			dataLog.push ({ Tipo: "Observaciones",Fila: nfila,Fecha:fechaActual , Codigo:data.Code, Error: data.Msg }),
 			container.innerHTML =errorHTML;
 			console.log(dataLog);
 			// escribidor(dataLog);
